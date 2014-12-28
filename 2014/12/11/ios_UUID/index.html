@@ -4,23 +4,16 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>andriod推送总结 | wangxiaohu&#39;s blog</title>
+    <title>关于IOS追踪用户设备总结 | wangxiaohu&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="wang.xiaohu">
     
-    <meta name="description" content="作者： 王小虎日期：2014-12-10
-andriod推送
-推送原理　
- 
-推送平台
-
-Google推出的免费GoogleCloudMessaging（对于国外客户来说很适合，但对于国内用户由于众所周知的原因，国内无法使用）
-
-国内第三方推送平台（针对个人开发者免费，针对企业收费）
-
-极光推送
-个">
+    <meta name="description" content="作者： 王小虎日期：2014-12-11
+关于IOS追踪用户设备总结
+一、    完全不能使用方案　
+1、UDID
+设备唯一标识符（Unique Device Identifier）之前被各种国内外统计平台，应用开发商广泛使用，后Apple从2013年05月01日起拒绝接受使用UDID的应用后，立毙">
     
     
     
@@ -81,14 +74,14 @@ Google推出的免费GoogleCloudMessaging（对于国外客户来说很适合，
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/12/10/android_push/" title="andriod推送总结" itemprop="url">andriod推送总结</a>
+      <a href="/2014/12/11/ios_UUID/" title="关于IOS追踪用户设备总结" itemprop="url">关于IOS追踪用户设备总结</a>
   </h1>
   <p class="article-author">By
        
 		<a href="http://wangxh89.github.io/about" title="wang.xiaohu" target="_blank" itemprop="author">wang.xiaohu</a>
 		
   <p class="article-time">
-    <time datetime="2014-12-10T11:36:10.000Z" itemprop="datePublished"> 发表于 12月 10 2014</time>
+    <time datetime="2014-12-11T11:36:10.000Z" itemprop="datePublished"> 发表于 12月 11 2014</time>
     
   </p>
 </header>
@@ -98,60 +91,39 @@ Google推出的免费GoogleCloudMessaging（对于国外客户来说很适合，
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#andriod推送"><span class="toc-number">1.</span> <span class="toc-text">andriod推送</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#推送原理_"><span class="toc-number">1.1.</span> <span class="toc-text">推送原理　</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推送平台"><span class="toc-number">1.2.</span> <span class="toc-text">推送平台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#极光推送"><span class="toc-number">1.3.</span> <span class="toc-text">极光推送</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#集成极光推送SDK"><span class="toc-number">1.3.1.</span> <span class="toc-text">集成极光推送SDK</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指定推送对象"><span class="toc-number">1.3.2.</span> <span class="toc-text">指定推送对象</span></a></li></ol></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#关于IOS追踪用户设备总结"><span class="toc-number">1.</span> <span class="toc-text">关于IOS追踪用户设备总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、_完全不能使用方案_"><span class="toc-number">1.1.</span> <span class="toc-text">一、    完全不能使用方案　</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、UDID"><span class="toc-number">1.1.1.</span> <span class="toc-text">1、UDID</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、_Mac地址"><span class="toc-number">1.1.2.</span> <span class="toc-text">2、    Mac地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、_第三方解决方案OPENUDID"><span class="toc-number">1.1.3.</span> <span class="toc-text">3、 第三方解决方案OPENUDID</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、_各有缺点的方案"><span class="toc-number">1.2.</span> <span class="toc-text">二、    各有缺点的方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、_CFUUID"><span class="toc-number">1.2.1.</span> <span class="toc-text">1、    CFUUID</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、_DeviceToken"><span class="toc-number">1.2.2.</span> <span class="toc-text">2、    DeviceToken</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、_Apple建议方案"><span class="toc-number">1.2.3.</span> <span class="toc-text">3、    Apple建议方案</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、_参考"><span class="toc-number">1.3.</span> <span class="toc-text">三、    参考</span></a></li></ol></li></ol>
 		
 		</div>
 		
-		<p><em>作者： 王小虎</em><br><em>日期：2014-12-10</em></p>
-<h2 id="andriod推送">andriod推送</h2>
-<h3 id="推送原理_">推送原理　</h3>
-<p><img src="http://img-wangxh89.qiniudn.com/android-push-yl.png" alt="推送原理图"> </p>
-<h3 id="推送平台">推送平台</h3>
-<ul>
-<li><p>Google推出的免费GoogleCloudMessaging（对于国外客户来说很适合，但对于国内用户由于众所周知的原因，国内无法使用）</p>
-</li>
-<li><p>国内第三方推送平台（针对个人开发者免费，针对企业收费）</p>
-<ul>
-<li>极光推送</li>
-<li>个推</li>
-<li>百度推送</li>
-<li>小米推送</li>
-<li>等等</li>
-</ul>
-</li>
-<li><p>自己实现一套推送系统或者采用比较成熟的开源方案</p>
-</li>
-</ul>
-<h3 id="极光推送">极光推送</h3>
-<ul>
-<li><p>推送通知</p>
-<p>  在手机通知栏上显示出来</p>
-</li>
-<li><p>推送消息</p>
-<p>   用户看不到的，开发者根据自己的需要展现处理</p>
-</li>
-</ul>
-<h4 id="集成极光推送SDK">集成极光推送SDK</h4>
-<ul>
-<li>下载SDK开发包</li>
-<li>将libs目录复制到自己项目的libs目录</li>
-<li>配置AndroidManifest.xml(复制包中的“Required”部分）</li>
-<li>将备注为替换包名的部分，替换为当前应用程序的包名</li>
-<li>将AppKey替换为在Portal上注册的该应用的KEY</li>
-<li><p>添加代码</p>
-<pre><code>  onCreate {
-      JPushInterface.setDebugMode(<span class="literal">true</span>);
-      JPushInterface.init(<span class="keyword">this</span>);
-  }
-</code></pre></li>
-</ul>
-<h4 id="指定推送对象">指定推送对象</h4>
-<ul>
-<li>广播（所有人）</li>
-<li>RegistrationID  由极光推送生成的ID 通过 JPushInterface.getRegistrationID(this); 获取  缺点由极光推送维护的</li>
-<li>设备别名（alias) 可以针对当前用户设置别名     JPushInterface.setAlias(this,”别名”，new TagAliasCallback() {})</li>
-<li>设备标签（Tag) 可以针对某一组推送消息     JPushInterface.setTags</li>
-</ul>
+		<p><em>作者： 王小虎</em><br><em>日期：2014-12-11</em></p>
+<h2 id="关于IOS追踪用户设备总结">关于IOS追踪用户设备总结</h2>
+<h3 id="一、_完全不能使用方案_">一、    完全不能使用方案　</h3>
+<h4 id="1、UDID">1、UDID</h4>
+<p>设备唯一标识符（Unique Device Identifier）之前被各种国内外统计平台，应用开发商广泛使用，后Apple从2013年05月01日起拒绝接受使用UDID的应用后，立毙！并且iOS7中已经完全的禁用了它</p>
+<p><a href="https://developer.apple.com/library/ios/releasenotes/iOS70APIDiffs/index.html#//apple_ref/doc/uid/TP40013203" target="_blank" rel="external">https://developer.apple.com/library/ios/releasenotes/iOS70APIDiffs/index.html#//apple_ref/doc/uid/TP40013203</a><br><a href="https://developer.apple.com/library/ios/releasenotes/General/iOS70APIDiffs/index.html#//apple_ref/doc/uid/TP40013203" target="_blank" rel="external">https://developer.apple.com/library/ios/releasenotes/General/iOS70APIDiffs/index.html#//apple_ref/doc/uid/TP40013203</a><br>Removed UIDevice.uniqueIdentifier</p>
+<h4 id="2、_Mac地址">2、    Mac地址</h4>
+<p>苹果并不希望有人通过MAC地址来分辨用户，所以如果你在iOS7系统上查询MAC地址，它现在只会返回02:00:00:00:00:00。 </p>
+<p><a href="https://developer.apple.com/library/iOS/releasenotes/General/RN-iOSSDK-7.0/index.html" target="_blank" rel="external">https://developer.apple.com/library/iOS/releasenotes/General/RN-iOSSDK-7.0/index.html</a></p>
+<p>Networking<br>Notes</p>
+<p>Two low-level networking APIs that used to return a MAC address now return the fixed value 02:00:00:00:00:00. The APIs in question are sysctl (NET_RT_IFLIST) and ioctl (SIOCGIFCONF). Developers using the value of the MAC address should migrate to identifiers such as -[UIDevice identifierForVendor]. This change affects all apps running on iOS 7.</p>
+<h4 id="3、_第三方解决方案OPENUDID">3、 第三方解决方案OPENUDID</h4>
+<p>IOS7 UIPasteboard由共享变为沙盒化了 这样就让OpenUDID不那么有用了。</p>
+<p><a href="http://blog.appsfire.com/udid-is-dead-openudid-is-deprecated-long-live-advertisingidentifier/" target="_blank" rel="external">http://blog.appsfire.com/udid-is-dead-openudid-is-deprecated-long-live-advertisingidentifier/</a></p>
+<h3 id="二、_各有缺点的方案">二、    各有缺点的方案</h3>
+<h4 id="1、_CFUUID">1、    CFUUID</h4>
+<p>就是将用户自己生成唯一标识字符串，然后将唯一标识字符串存放到NSUserDefaults或者keychain中  </p>
+<p>CFUUID 问题：</p>
+<p>  A、每次生成的唯一标识字符串是不一样的，存在NSUserDefaults应用删除后就读取不到了。 存在keychain中必须是用同样证书的应用才能读取。</p>
+<p>B、如果你从一台旧设备中备份文件到新设备中，两台设备就拥有相同的 CFUUID。如果你从临时文件中备份操作系统，就会出现一个设备里存在不同 CFUUID 的情况。</p>
+<h4 id="2、_DeviceToken">2、    DeviceToken</h4>
+<p>这是推送用的令牌，是唯一的，但用户如果没开推送，或者拒绝了，这个就没有了</p>
+<h4 id="3、_Apple建议方案">3、    Apple建议方案</h4>
+<p>新增了两个用于替换uniqueIdentifier的接口，分别是：</p>
+<p>identifierForVendor： 当我们删除了某一个设备上某个开发商的所有APP之后，下次获取将会获取到不同的ID </p>
+<p>advertisingIdentifier： 在同一个设备上的所有App都会取到相同的值，是苹果专门给各广告提供商用来追踪用户而设的，用户可以在 设置|隐私|广告追踪 里重置此id的值，或限制此id的使用，故此id有可能会取不到值。并且如果申请上架的应用里没有广告而使用这个ID的话，审核会不通过</p>
+<h3 id="三、_参考">三、    参考</h3>
+<p>苹果应用审查中关于隐私之一节</p>
+<p><a href="https://developer.apple.com/app-store/review/guidelines/#privacy" target="_blank" rel="external">https://developer.apple.com/app-store/review/guidelines/#privacy</a></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -173,7 +145,7 @@ Google推出的免费GoogleCloudMessaging（对于国外客户来说很适合，
 
 <div class="article-share" id="share">
 
-  <div data-url="http://wangxh89.github.io/2014/12/10/android_push/" data-title="andriod推送总结 | wangxiaohu&#39;s blog" data-tsina="null" class="share clearfix">
+  <div data-url="http://wangxh89.github.io/2014/12/11/ios_UUID/" data-title="关于IOS追踪用户设备总结 | wangxiaohu&#39;s blog" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -182,19 +154,11 @@ Google推出的免费GoogleCloudMessaging（对于国外客户来说很适合，
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2014/12/11/ios_UUID/" title="关于IOS追踪用户设备总结">
-  <strong>上一篇：</strong><br/>
-  <span>
-  关于IOS追踪用户设备总结</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2014/10/24/UIWebView/"  title="UIWebView整理">
+<a href="/2014/12/10/android_push/"  title="andriod推送总结">
  <strong>下一篇：</strong><br/> 
- <span>UIWebView整理
+ <span>andriod推送总结
 </span>
 </a>
 </div>
@@ -213,7 +177,7 @@ Google推出的免费GoogleCloudMessaging（对于国外客户来说很适合，
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#andriod推送"><span class="toc-number">1.</span> <span class="toc-text">andriod推送</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#推送原理_"><span class="toc-number">1.1.</span> <span class="toc-text">推送原理　</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推送平台"><span class="toc-number">1.2.</span> <span class="toc-text">推送平台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#极光推送"><span class="toc-number">1.3.</span> <span class="toc-text">极光推送</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#集成极光推送SDK"><span class="toc-number">1.3.1.</span> <span class="toc-text">集成极光推送SDK</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指定推送对象"><span class="toc-number">1.3.2.</span> <span class="toc-text">指定推送对象</span></a></li></ol></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#关于IOS追踪用户设备总结"><span class="toc-number">1.</span> <span class="toc-text">关于IOS追踪用户设备总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、_完全不能使用方案_"><span class="toc-number">1.1.</span> <span class="toc-text">一、    完全不能使用方案　</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、UDID"><span class="toc-number">1.1.1.</span> <span class="toc-text">1、UDID</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、_Mac地址"><span class="toc-number">1.1.2.</span> <span class="toc-text">2、    Mac地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、_第三方解决方案OPENUDID"><span class="toc-number">1.1.3.</span> <span class="toc-text">3、 第三方解决方案OPENUDID</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、_各有缺点的方案"><span class="toc-number">1.2.</span> <span class="toc-text">二、    各有缺点的方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、_CFUUID"><span class="toc-number">1.2.1.</span> <span class="toc-text">1、    CFUUID</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、_DeviceToken"><span class="toc-number">1.2.2.</span> <span class="toc-text">2、    DeviceToken</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、_Apple建议方案"><span class="toc-number">1.2.3.</span> <span class="toc-text">3、    Apple建议方案</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、_参考"><span class="toc-number">1.3.</span> <span class="toc-text">三、    参考</span></a></li></ol></li></ol>
  
   </div>
 
