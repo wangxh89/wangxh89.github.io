@@ -1,0 +1,534 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>andriod Service总结 | wangxiaohu&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="wang.xiaohu">
+    
+    <meta name="description" content="作者： 王小虎日期：2014-12-29
+生命周期
+ 
+Service和Thread的区别
+1). Thread：Thread 是程序执行的最小单元，它是分配CPU的基本单位。可以用 Thread 来执行一些异步的操作。2). Service：Service 是android的一种机制，当它运行的时">
+    
+    
+    
+    
+    <link rel="alternative" href="/atom.xml" title="wangxiaohu&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="wangxiaohu&#39;s blog" title="wangxiaohu&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="wangxiaohu&#39;s blog">wangxiaohu&#39;s blog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:wangxh89.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/12/29/andorid_service/" title="andriod Service总结" itemprop="url">andriod Service总结</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="http://wangxh89.github.io/about" title="wang.xiaohu" target="_blank" itemprop="author">wang.xiaohu</a>
+		
+  <p class="article-time">
+    <time datetime="2014-12-29T11:36:10.000Z" itemprop="datePublished"> 发表于 12月 29 2014</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#生命周期"><span class="toc-number">1.</span> <span class="toc-text">生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Service和Thread的区别"><span class="toc-number">2.</span> <span class="toc-text">Service和Thread的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注意"><span class="toc-number">3.</span> <span class="toc-text">注意</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Service代码"><span class="toc-number">4.</span> <span class="toc-text">Service代码</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#客户端代码"><span class="toc-number">4.0.1.</span> <span class="toc-text">客户端代码</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Service端代码"><span class="toc-number">4.0.2.</span> <span class="toc-text">Service端代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用startForeground让android服务前台运行"><span class="toc-number">5.</span> <span class="toc-text">使用startForeground让android服务前台运行</span></a></li></ol>
+		
+		</div>
+		
+		<p><em>作者： 王小虎</em><br><em>日期：2014-12-29</em></p>
+<h3 id="生命周期">生命周期</h3>
+<p><img src="http://img-wangxh89.qiniudn.com/andoird-service-lifecyle.jpg" alt="Service 生命周期"> </p>
+<h3 id="Service和Thread的区别">Service和Thread的区别</h3>
+<p>1). Thread：Thread 是程序执行的最小单元，它是分配CPU的基本单位。可以用 Thread 来执行一些异步的操作。<br>2). Service：Service 是android的一种机制，当它运行的时候如果是Local Service，那么对应的 Service 是运行在主进程的 main 线程上的。如：onCreate，onStart 这些函数在被系统调用的时候都是在主进程的 main 线程上运行的。如果是Remote Service，那么对应的 Service 则是运行在独立进程的 main 线程上。因此请不要把 Service 理解成线程，它跟线程半毛钱的关系都没有！</p>
+<p>既然这样，那么我们为什么要用 Service 呢？其实这跟 android 的系统机制有关，我们先拿 Thread 来说。Thread 的运行是独立于 Activity 的，也就是说当一个 Activity 被 finish 之后，如果你没有主动停止 Thread 或者 Thread 里的 run 方法没有执行完毕的话，Thread 也会一直执行。因此这里会出现一个问题：当 Activity 被 finish 之后，你不再持有该 Thread 的引用。另一方面，你没有办法在不同的 Activity 中对同一 Thread 进行控制。</p>
+<p>举个例子：如果你的 Thread 需要不停地隔一段时间就要连接服务器做某种同步的话，该 Thread 需要在 Activity 没有start的时候也在运行。这个时候当你 start 一个 Activity 就没有办法在该 Activity 里面控制之前创建的 Thread。因此你便需要创建并启动一个 Service ，在 Service 里面创建、运行并控制该 Thread，这样便解决了该问题（因为任何 Activity 都可以控制同一 Service，而系统也只会创建一个对应 Service 的实例）。</p>
+<p>因此你可以把 Service 想象成一种消息服务，而你可以在任何有 Context 的地方调用 Context.startService、Context.stopService、Context.bindService，Context.unbindService，来控制它，你也可以在 Service 里注册 BroadcastReceiver，在其他地方通过发送 broadcast 来控制它，当然这些都是 Thread 做不到的。</p>
+<h3 id="注意">注意</h3>
+<p>同一个进程中的所有组件运行在同一个线程中，Activiy，Service，BoradcastReceiver和ContentProvider都运行在主线程中。最容易引起误解的就是Service，文档和常识都会认为Service是放在后台用于操作费时运算的，但是实则不然，如果你在Service中做费时操作，同样会引发臭名昭著的ANR（Application Not Responding)。所以如果想把Service当做一个Server，必须在Service用HandlerThread或Thread创建一个Worker线程</p>
+<h3 id="Service代码">Service代码</h3>
+<h5 id="客户端代码">客户端代码</h5>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceTest2</span> <span class="keyword">extends</span> <span class="title">Activity</span></span>{  
+    ... ...  
+    <span class="comment">//对于客户端，和上次例子相似，通过Intent作为命令，本例传递的参数为两个，通过startService()来启动服务。 </span>
+    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title">startPlayer</span>(){ 
+        Intent i = <span class="keyword">new</span> Intent(<span class="keyword">this</span>,ServicePlayer.class); 
+        i.putExtra(ServicePlayer.EXTRA_PLAYLIST, <span class="string">"playlist"</span>);
+        i.putExtra(ServicePlayer.EXTRA_SHUFFLE, <span class="keyword">true</span>); 
+        startService(i); 
+    } 
+    <span class="comment">//有用户干预的停止服务。在例子中，我们并不使用创建服务的intent，因为Activity的生命周期可能已经结束，intent已被垃圾回收，我们重新开启Activity，在新的Activity中，不需开启服务就可直接停止。 </span>
+    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title">stopPlayer</span>(){ 
+       stopService(<span class="keyword">new</span> Intent(<span class="keyword">this</span>,ServicePlayer.class)); 
+    } 
+}
+</code></pre><h5 id="Service端代码">Service端代码</h5>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServicePlayer</span> <span class="keyword">extends</span> <span class="title">Service</span></span>{
+   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String EXTRA_PLAYLIST = <span class="string">"com.wei.android.learning.EXTRA_PLAYLIST"</span>;
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String EXTRA_SHUFFLE = <span class="string">"com.wei.android.learning.EXTRA_SHUFFLE"</span>;
+    <span class="keyword">private</span> <span class="keyword">boolean</span> isPlaying = <span class="keyword">false</span>;  
+    <span class="comment">//将在以后学习Bind Service的模式 </span>
+    <span class="keyword">public</span> IBinder <span class="title">onBind</span>(Intent arg0) {  
+        <span class="keyword">return</span> <span class="keyword">null</span>; 
+    } 
+    <span class="comment">//收到客户端触发，如果服务尚未启动，则先执行onCreate()，再此进行服务初始化处理。 </span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span>() { 
+        <span class="keyword">super</span>.onCreate(); 
+    }  
+    <span class="comment">//在收到stopService()时触发，我们将在此处理停止Service的相关事宜，例如停止后台线程的运行等等。 </span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroy</span>() {  
+        playStop(); 
+        <span class="keyword">super</span>.onDestroy(); 
+    }  
+    <span class="comment">//当系统内存少时，将要求终止服务，我们在此进行关闭服务的处理，例如保持相关的状态等，如服务部需保持特定状态，则无需重写此方法。  </span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLowMemory</span>() {  
+        <span class="keyword">super</span>.onLowMemory(); 
+    }   
+    <span class="comment">//收到客户端请求时触发，由于onStartCommand()运行在主线程，将进行本次服务的初始化，并开启后台线程运行相关的处理，具体参加线程的学习笔记，本例只考察Service相关内容。返回值将告诉系统如果service的进程被杀掉，将会如何：START_STICKY表示服务将回到开始状态，如同onStartCommand()被called，但是Intent不会重发；START_REDELIVER_INTENT表示要求系统重新发送一次Intent，即服务将重新触发执行onStartCommand()；START_NOT_STICKY表示无需干预，服务停止，等待有新的命令触发。</span>
+    <span class="keyword">public</span> <span class="keyword">int</span> <span class="title">onStartCommand</span>(Intent intent, <span class="keyword">int</span> flags, <span class="keyword">int</span> startId) {  
+        showInfo(<span class="string">"onStartCommand"</span>); 
+        String playlist = intent.getStringExtra(EXTRA_PLAYLIST); 
+        <span class="keyword">boolean</span> suffle = intent.getBooleanExtra(EXTRA_SHUFFLE, <span class="keyword">false</span>); 
+        playStart(playlist,suffle); 
+        <span class="keyword">return</span> START_NOT_STICKY; 
+    }  
+    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title">playStart</span>(String playlist, <span class="keyword">boolean</span> suffle){
+        <span class="keyword">if</span>(! isPlaying){  
+            isPlaying = <span class="keyword">true</span>; 
+        } 
+    }  
+    <span class="keyword">private</span> <span class="keyword">void</span>  <span class="title">playStop</span>(){ 
+        <span class="keyword">if</span>( isPlaying){ 
+            showInfo(<span class="string">"Go to Stop!"</span>); 
+            isPlaying = <span class="keyword">false</span>; 
+        } 
+    } 
+}
+</code></pre><p>如果有三个客户端都通过startService()，也只会启动一个服务。只有第一个发出命令时，系统发现服务没有启动，将启动服务，其余的直接触发onStartCommand()。通过startService()并不仅仅是发送命令，而是告诉系统服务维持运行，直至通知它服务停止</p>
+<h3 id="使用startForeground让android服务前台运行">使用startForeground让android服务前台运行</h3>
+<p>通常情况下Service在后台运行，当Android也支持Service运行在前台，运行在前台的Service必须在屏幕顶端的Status Bar提供一个Notification以提示用户有Service在运行。比如提供个Media Player使用的Service运行在前台，而在标题栏显示当前曲目。<br>前台运行的Service可以通过调用startForeground()使Service在前台运行。stopForeground停止前台运行，但Service本身不会停止</p>
+<p>最近在使用android 4.1系统的时候，发现在手机休眠一段时间后（1-2小时），后台运行的服务被强行kill掉，有可能是系统回收内存的一种机制，要想避免这种情况可以通过startForeground让服务前台运行，当stopservice的时候通过stopForeground去掉。<br>要想实现需求，我们只需要在onStartCommand里面调用 startForeground，然后再onDestroy里面调用stopForeground即可！<br>实际情况就譬如手机里面的音乐播放器一样，不管手机如何休眠，只要开始播放音乐了，就不会kill掉这个服务，一旦停止播放音乐，服务就可能被清掉。</p>
+<p>Notification除了用于后台服务通知，还常用在下面情况：<br>（1）保持服务存在。当系统内存不足时，系统会认为某后台服务占用内存时间太长而中止该服务，以释放内存。对于某些服务，例如播放音乐，如果系统对该服务进行资源释放，用户体验就成了音乐突然没有声音。对这类服务，我们希望享有更高的优先级别，不会被系统干掉。<br>（2）用户随时与服务进行互动。例如播放音乐的服务，用户可随时暂停音乐播放，或选择其他曲目，甚至中止播放音乐服务。<br>要实现上述两点，方法是在Service中宣称自己是foreground，并维持一个通知来向用户表明foreground状态，用户可以通过下拉通知并点击通知，进入该服务界面，实施互动操作。</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FakePlayerService</span> <span class="keyword">extends</span> <span class="title">Service</span></span>{ 
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String EXTRA_PLAYLIST=<span class="string">"EXTRA_PLAYLIST"</span>;
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String EXTRA_SHUFFLE=<span class="string">"EXTRA_SHUFFLE"</span>; 
+    <span class="keyword">private</span> <span class="keyword">boolean</span> isPlay = <span class="keyword">false</span>; 
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> NOTIFY_FAKEPLAYER_ID=<span class="number">1339</span>;  
+
+    <span class="keyword">public</span> IBinder <span class="title">onBind</span>(Intent arg0) {  
+        <span class="keyword">return</span> <span class="keyword">null</span>; 
+    } 
+
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroy</span>() {  
+        stop(); 
+    } 
+
+    <span class="keyword">public</span> <span class="keyword">int</span> <span class="title">onStartCommand</span>(Intent intent, <span class="keyword">int</span> flags, <span class="keyword">int</span> startId) {  
+        String playlist = intent.getStringExtra(EXTRA_PLAYLIST);
+        Boolean isShuffle = intent.getBooleanExtra(EXTRA_SHUFFLE, <span class="keyword">false</span>); 
+        play(playlist,isShuffle); 
+        <span class="keyword">return</span> START_NOT_STICKY; 
+    } 
+
+    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title">play</span>(String playlist, Boolean isShuffle){  
+        <span class="keyword">if</span>(!isPlay){  
+            isPlay = <span class="keyword">true</span>; 
+            <span class="comment">//和上一笔记中创建通知的步骤一样，只是不需要通过通知管理器进行触发，而是用startForeground(ID,notify)来处理</span>
+            <span class="comment">//步骤1：和上一笔记一样，通过Notification.Builder( )来创建通知</span>
+            <span class="comment">//FakePlayer就是两个大button的activity，也即服务的界面，见最左图</span>
+            Intent i = <span class="keyword">new</span> Intent(<span class="keyword">this</span>,FakePlayer.class);
+            <span class="comment">//注意Intent的flag设置：FLAG_ACTIVITY_CLEAR_TOP: 如果activity已在当前任务中运行，在它前端的activity都会被关闭，它就成了最前端的activity。FLAG_ACTIVITY_SINGLE_TOP: 如果activity已经在最前端运行，则不需要再加载。设置这两个flag，就是让一个且唯一的一个activity（服务界面）运行在最前端。</span>
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            PendingIntent pi = PendingIntent.getActivity(<span class="keyword">this</span>, <span class="number">0</span>, i, <span class="number">0</span>);           
+            Notification myNotify = <span class="keyword">new</span> Notification.Builder(<span class="keyword">this</span>) 
+                                    .setSmallIcon(R.drawable.shield) 
+                                    .setTicker(<span class="string">"Fake Player: "</span> + playlist) 
+                                    .setContentTitle(<span class="string">"Test"</span>) 
+                                    .setContentText(<span class="string">"Now Playing: \"Ummmm, Nothing\""</span>)
+                                    .setContentIntent(pi) 
+                                    .build();             
+            <span class="comment">//设置notification的flag，表明在点击通知后，通知并不会消失，也在最右图上仍在通知栏显示图标。这是确保在activity中退出后，状态栏仍有图标可提下拉、点击，再次进入activity。</span>
+            myNotify.flags |= Notification.FLAG_NO_CLEAR;
+
+           <span class="comment">// 步骤 2：startForeground( int, Notification)将服务设置为foreground状态，使系统知道该服务是用户关注，低内存情况下不会killed，并提供通知向用户表明处于foreground状态。</span>
+            startForeground(NOTIFY_FAKEPLAYER_ID,myNotify);
+        } 
+    } 
+
+    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title">stop</span>(){ 
+        <span class="keyword">if</span>(isPlay){ 
+            isPlay = <span class="keyword">false</span>; 
+           <span class="comment">//将服务从forefround状态中移走，使得系统可以在低内存的情况下清除它。 </span>
+            stopForeground(<span class="keyword">true</span>);  
+        } 
+    } 
+
+} 
+</code></pre>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android/">android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/andriod-Service/">andriod Service</a>
+  </div>
+
+</div>
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://wangxh89.github.io/2014/12/29/andorid_service/" data-title="andriod Service总结 | wangxiaohu&#39;s blog" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2014/12/11/ios_UUID/"  title="关于IOS追踪用户设备总结">
+ <strong>下一篇：</strong><br/> 
+ <span>关于IOS追踪用户设备总结
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#生命周期"><span class="toc-number">1.</span> <span class="toc-text">生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Service和Thread的区别"><span class="toc-number">2.</span> <span class="toc-text">Service和Thread的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注意"><span class="toc-number">3.</span> <span class="toc-text">注意</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Service代码"><span class="toc-number">4.</span> <span class="toc-text">Service代码</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#客户端代码"><span class="toc-number">4.0.1.</span> <span class="toc-text">客户端代码</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Service端代码"><span class="toc-number">4.0.2.</span> <span class="toc-text">Service端代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用startForeground让android服务前台运行"><span class="toc-number">5.</span> <span class="toc-text">使用startForeground让android服务前台运行</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/Flex/" title="Flex">Flex<sup>2</sup></a></li>
+		
+			<li><a href="/categories/IOS/" title="IOS">IOS<sup>2</sup></a></li>
+		
+			<li><a href="/categories/android/" title="android">android<sup>2</sup></a></li>
+		
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/andriod-Service/" title="andriod Service">andriod Service<sup>1</sup></a></li>
+		
+			<li><a href="/tags/IOS追踪用户设备/" title="IOS追踪用户设备">IOS追踪用户设备<sup>1</sup></a></li>
+		
+			<li><a href="/tags/andriod推送/" title="andriod推送">andriod推送<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Flex面试题/" title="Flex面试题">Flex面试题<sup>1</sup></a></li>
+		
+			<li><a href="/tags/RequireJs/" title="RequireJs">RequireJs<sup>1</sup></a></li>
+		
+			<li><a href="/tags/FlexMonkey/" title="FlexMonkey">FlexMonkey<sup>1</sup></a></li>
+		
+			<li><a href="/tags/FlexAutomation/" title="FlexAutomation">FlexAutomation<sup>1</sup></a></li>
+		
+			<li><a href="/tags/UIWebView/" title="UIWebView">UIWebView<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jquery/" title="jquery">jquery<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+      <li><a href="http://wuchong.me" target="_blank" title="WuChong">Jark's Blog</a></li>
+      <li><a href="http://hexo.io" target="_blank" title="Hexo">Hexo</a></li>
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/1681392324" target="_blank" class="icon-weibo" title="weibo"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Pacman">Jacman</a> © 2014 
+		
+		<a href="http://wangxh89.github.io/about" target="_blank" title="wang.xiaohu">wang.xiaohu</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"wangxh89"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+
+
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<script src="/js/totop.js"></script>
+
+
+
+
+  </body>
+</html>
