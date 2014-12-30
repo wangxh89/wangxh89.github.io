@@ -1,0 +1,658 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>andriod Activity总结及技巧 | wangxiaohu&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="wang.xiaohu">
+    
+    <meta name="description" content="作者： 王小虎日期：2014-12-30
+Activity启动模式 及 Intent Flags 与 栈
+Activity启动模式
+android:launchMode  用于指示Activity如何启动。这里有四种模式，与Intent对象中的Activity Flags的属性（FLAGACTIVI">
+    
+    
+    
+    
+    <link rel="alternative" href="/atom.xml" title="wangxiaohu&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="wangxiaohu&#39;s blog" title="wangxiaohu&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="wangxiaohu&#39;s blog">wangxiaohu&#39;s blog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:wangxh89.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/12/30/android_activity/" title="andriod Activity总结及技巧" itemprop="url">andriod Activity总结及技巧</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="http://wangxh89.github.io/about" title="wang.xiaohu" target="_blank" itemprop="author">wang.xiaohu</a>
+		
+  <p class="article-time">
+    <time datetime="2014-12-30T11:36:10.000Z" itemprop="datePublished"> 发表于 12月 30 2014</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Activity启动模式_及_Intent_Flags_与_栈"><span class="toc-number">1.</span> <span class="toc-text">Activity启动模式 及 Intent Flags 与 栈</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Activity启动模式"><span class="toc-number">1.1.</span> <span class="toc-text">Activity启动模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#standard"><span class="toc-number">1.1.1.</span> <span class="toc-text">standard</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#singleTop"><span class="toc-number">1.1.2.</span> <span class="toc-text">singleTop</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#singleTask"><span class="toc-number">1.1.3.</span> <span class="toc-text">singleTask</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#singleInstance"><span class="toc-number">1.1.4.</span> <span class="toc-text">singleInstance</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Intent_Flags"><span class="toc-number">1.2.</span> <span class="toc-text">Intent Flags</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Intent-FLAG_ACTIVITY_NEW_TASK_（默认）"><span class="toc-number">1.2.1.</span> <span class="toc-text">Intent.FLAG_ACTIVITY_NEW_TASK （默认）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FLAG_ACTIVITY_SINGLE_TOP"><span class="toc-number">1.2.2.</span> <span class="toc-text">FLAG_ACTIVITY_SINGLE_TOP</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FLAG_ACTIVITY_CLEAR_TOP"><span class="toc-number">1.2.3.</span> <span class="toc-text">FLAG_ACTIVITY_CLEAR_TOP</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FLAG_ACTIVITY_BROUGHT_TO_FRONT"><span class="toc-number">1.2.4.</span> <span class="toc-text">FLAG_ACTIVITY_BROUGHT_TO_FRONT</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FLAG_ACTIVITY_NO_USER_ACTION"><span class="toc-number">1.2.5.</span> <span class="toc-text">FLAG_ACTIVITY_NO_USER_ACTION</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FLAG_ACTIVITY_NO_HISTORY"><span class="toc-number">1.2.6.</span> <span class="toc-text">FLAG_ACTIVITY_NO_HISTORY</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#taskAffinity"><span class="toc-number">1.2.7.</span> <span class="toc-text">taskAffinity</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Activity技巧"><span class="toc-number">2.</span> <span class="toc-text">Activity技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#不让Activity实例化多次"><span class="toc-number">2.1.</span> <span class="toc-text">不让Activity实例化多次</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Activity_finish();"><span class="toc-number">2.2.</span> <span class="toc-text">Activity  finish();</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#锁定_Activity_运行时的屏幕方向"><span class="toc-number">2.3.</span> <span class="toc-text">锁定 Activity 运行时的屏幕方向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#全屏的_Activity"><span class="toc-number">2.4.</span> <span class="toc-text">全屏的 Activity</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在_Activity_的_Title_中加入进度条"><span class="toc-number">2.5.</span> <span class="toc-text">在 Activity 的 Title 中加入进度条</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Activity截屏"><span class="toc-number">2.6.</span> <span class="toc-text">Activity截屏</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<p><em>作者： 王小虎</em><br><em>日期：2014-12-30</em></p>
+<h2 id="Activity启动模式_及_Intent_Flags_与_栈">Activity启动模式 及 Intent Flags 与 栈</h2>
+<h3 id="Activity启动模式">Activity启动模式</h3>
+<p><strong>android:launchMode</strong>  用于指示Activity如何启动。这里有四种模式，与Intent对象中的Activity Flags的属性（FLAG<em>ACTIVITY</em>*变量）共同作用，来决定Activity如何启动来处理Intent。</p>
+<h4 id="standard">standard</h4>
+<p>Activity的默认加载方法，该方法会通过跳转到一个新的activity，同时将该实例压入到栈中（不管该activity是否已经存在在Task栈中，都是采用new操作）。例如： 栈中顺序是A B C D ，此时D通过Intent跳转到A，那么栈中结构就变成 A B C D A ，点击返回按钮的 栈中结构就变成 A B C D</p>
+<h4 id="singleTop">singleTop</h4>
+<p>singleTop模式下，当前Activity D位于栈顶的时候，如果通过Intent跳转到它本身的Activity （即D），那么不会重新创建一个新的D实例，所以栈中的结构依旧为A B C D，如果跳转到B，那么由于B不处于栈顶，所以会新建一个B实例并压入到栈中，结构就变成了A B C D B。</p>
+<p><strong>注</strong> 没有处于栈顶——此时与standard模式完全相同</p>
+<h4 id="singleTask">singleTask</h4>
+<p>在同一个Task内只有一个实例，分3种情况 </p>
+<ul>
+<li>如果要启动的目标Activity不存在，系统将创建目标Activity，并加入Task 栈顶</li>
+<li>如果将要启动的目标Activity已经存在于Task栈顶，此时与singleTop模式相同</li>
+<li>如果将要启动的目标Activty已经存在，但没有位于栈顶，系统将位于该Activity上面的所有Activity移出Task栈，从而使得目标Activity转入栈顶</li>
+</ul>
+<h4 id="singleInstance">singleInstance</h4>
+<p>只会创建一个Activity实例，并会使用一个全新的Task栈来装载该Activity,分2种情况</p>
+<ul>
+<li>如果将要启动的目标Activity不存在，系统会创建一个全新的Task，再创建目标Activity，并把它加入到Task栈顶</li>
+<li>如果将要启动的目标Activity已经存在，系统会将该Activity所在的Task转到前台，从而使其显示出来</li>
+</ul>
+<h3 id="Intent_Flags">Intent Flags</h3>
+<h4 id="Intent-FLAG_ACTIVITY_NEW_TASK_（默认）">Intent.FLAG_ACTIVITY_NEW_TASK （默认）</h4>
+<p>默认的跳转类型,它会重新创建一个新的Activity，不过与这种情况，比如说Task1中有A,B,C三个Activity,此时在C中启动D的话，如果在AndroidManifest.xml文件中给D添加了Affinity的值和Task中的不一样的话，则会在新标记的Affinity所存在的Task中压入这个Activity。如果是默认的或者指定的Affinity和Task一样的话，就和标准模式一样了启动一个新的Activity.</p>
+<h4 id="FLAG_ACTIVITY_SINGLE_TOP">FLAG_ACTIVITY_SINGLE_TOP</h4>
+<p>这个FLAG就相当于启动模式中的singletop，例如:原来栈中结构是A B C D，在D中启动D，栈中的情况还是A,B,C,D。</p>
+<h4 id="FLAG_ACTIVITY_CLEAR_TOP">FLAG_ACTIVITY_CLEAR_TOP</h4>
+<p>这个FLAG就相当于启动模式中的SingleTask，这种FLAG启动的Activity会把要启动的Activity之上的Activity全部弹出栈空间。例如：原来栈中的结构是A B C D ，从D中跳转到B，栈中的结构就变为了A B了。（这个方法可以用来关闭多个Activity)</p>
+<h4 id="FLAG_ACTIVITY_BROUGHT_TO_FRONT">FLAG_ACTIVITY_BROUGHT_TO_FRONT</h4>
+<p>我现在有A，在A中启动B，此时在Ａ中Intent中加上这个标记。此时B就是以FLAG_ACTIVITY_BROUGHT_TO_FRONT方式启动，此时在B中再启动C，D（正常启动C,D），如果这个时候在D中再启动B，这个时候最后的栈的情况是 A,C,D,B</p>
+<h4 id="FLAG_ACTIVITY_NO_USER_ACTION">FLAG_ACTIVITY_NO_USER_ACTION</h4>
+<p>onUserLeaveHint()作为activity周期的一部分，它在activity因为用户要跳转到别的activity而要退到background时使用。比如,在用户按下Home键，它将被调用。比如有电话进来（不属于用户的选择），它就不会被调用。<br>那么系统如何区分让当前activity退到background时使用是用户的选择？</p>
+<p>它是根据促使当前activity退到background的那个新启动的Activity的Intent里是否有FLAG_ACTIVITY_NO_USER_ACTION来确定的。</p>
+<p>注意：调用finish()使该activity销毁时不会调用该函数</p>
+<h4 id="FLAG_ACTIVITY_NO_HISTORY">FLAG_ACTIVITY_NO_HISTORY</h4>
+<p>意思就是说用这个FLAG启动的Activity，一旦退出，它不会存在于栈中，比方说！原来是A,B,C这个时候再C中以这个FLAG启动D的，D再启动E，这个时候栈中情况为A,B,C,E。</p>
+<h4 id="taskAffinity">taskAffinity</h4>
+<p>Activity为Task拥有的一个affinity。拥有相同的affinity的Activity理论上属于相同的Task（在用户的角度是相同的“应用程序”）。Task的affinity是由它的根Activity决定的。</p>
+<p>注：以上的android:taskAffinity只有通过标志位为FLAG_ACTIVITY_NEW_TASK的Intent启动Activity时，该Activity的这个属性才会生效，系统才会将具有相同Task亲和力的Task切换到前台，然后启动该Activity，否则该Activity仍然运行在启动它的Task中。</p>
+<h2 id="Activity技巧">Activity技巧</h2>
+<h3 id="不让Activity实例化多次">不让Activity实例化多次</h3>
+<p>在默认情况下，当您通过Intent启到一个Activity的时候，就算已经存在一个相同的正在运行的Activity,系统都会创建一个新的Activity实例并显示出来。为了不让Activity实例化多次，我们需要通过在AndroidManifest.xml配置activity的加载方式（launchMode）以实现单任务模式，如下所示：</p>
+<pre><code>&lt;activity android:<span class="variable">label=</span><span class="string">"@string/app_name"</span> android:<span class="variable">launchmode=</span><span class="string">"singleTask"</span>android:<span class="variable">name=</span><span class="string">"Activity1"</span>&gt;
+&lt;/activity&gt;
+</code></pre><p>launchMode为singleTask的时候，通过Intent启到一个Activity,如果系统已经存在一个实例，系统就会将请求发送到这个实例上，但这个时候，系统就不会再调用通常情况下我们处理请求数据的onCreate方法，而是调用onNewIntent方法，如下所示:</p>
+<pre><code> <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onNewIntent</span>(Intent intent) {
+
+    <span class="keyword">super</span>.onNewIntent(intent);
+
+    setIntent(intent);<span class="comment">//must store the new intent unless getIntent() will return the old one</span>
+
+    processExtraData();
+
+  }
+</code></pre><p>不要忘记，系统可能会随时杀掉后台运行的Activity，如果这一切发生，那么系统就会调用onCreate方法，而不调用onNewIntent方法，一个好的解决方法就是在onCreate和onNewIntent方法中调用同一个处理数据的方法，如下所示：<br>      public void onCreate(Bundle savedInstanceState) {</p>
+<pre><code>    <span class="keyword">super</span>.onCreate(savedInstanceState);
+
+    setContentView(R.layout.main);
+
+    processExtraData();
+
+  }
+
+
+
+  <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onNewIntent</span>(Intent intent) {
+
+    <span class="keyword">super</span>.onNewIntent(intent);
+
+    setIntent(intent);<span class="comment">//must store the new intent unless getIntent() will return the old one</span>
+
+    processExtraData()
+
+  }
+
+
+
+  <span class="keyword">private</span> <span class="keyword">void</span> <span class="title">processExtraData</span>(){
+
+    Intent intent = getIntent();
+
+    <span class="comment">//use the data received here</span>
+
+  }
+</code></pre><h3 id="Activity_finish();">Activity  finish();</h3>
+<p>当你调用 Activity.finish()方法时，结果和用户按下 BACK 键一样：告诉 Activity Manager 该 Activity 实例完成了相应的工作，可以被“回收”。</p>
+<p>即使activity调用了finish()，也不会立即调用onDestory方法,而是执行完finish()后面的代码后才会调用onDestory方法。 </p>
+<pre><code>                Toast.makeText(<span class="keyword">this</span>, <span class="string">"正在解析"</span>, Toast.LENGTH_SHORT).show();
+                String openFile = paths.<span class="keyword">get</span>(position);
+                Uri uri = Uri.parse(openFile);
+                 finish();
+
+                 <span class="keyword">if</span> (fileExt.equals(<span class="string">".mp4"</span>)) {
+                      Intent mIntent = <span class="keyword">new</span> Intent(<span class="string">"createUI"</span>);
+                      mIntent.setData(uri);
+                      mIntent.setClass(mContext, MediaPlaybackService.<span class="keyword">class</span>);
+
+                      mContext.startService(mIntent);                        
+                }
+</code></pre><h3 id="锁定_Activity_运行时的屏幕方向">锁定 Activity 运行时的屏幕方向</h3>
+<p>Android 内置了方向感应器的支持。在 G1 中，Android 会根据 G1 所处的方向自动在竖屏和横屏间切换。但是有时我们的应用程序仅能在横屏 / 竖屏时运行，比如某些游戏，此时我们需要锁定该 Activity 运行时的屏幕方向，<activity>节点的 android:screenOrientation属性可以完成该项任务，示例代码如下：</activity></p>
+<pre><code> &lt;activity android:<span class="variable">name=</span><span class="string">".EX01"</span>
+ android:<span class="variable">label=</span><span class="string">"@string/app_name"</span> 
+ android:<span class="variable">screenOrientation=</span><span class="string">"portrait"</span>&gt;// 竖屏 , 值为 landscape 时为横屏
+…………
+ &lt;/activity&gt;
+</code></pre><h3 id="全屏的_Activity">全屏的 Activity</h3>
+<p>要使一个 Activity 全屏运行，可以在其 onCreate()方法中添加如下代码实现：</p>
+<pre><code> <span class="comment">// 设置全屏模式</span>
+ <span class="function">getWindow</span>()<span class="class">.setFlags</span>(WindowManager<span class="class">.LayoutParams</span><span class="class">.FLAG_FULLSCREEN</span>, 
+    WindowManager<span class="class">.LayoutParams</span><span class="class">.FLAG_FULLSCREEN</span>); 
+ <span class="comment">// 去除标题栏</span>
+ <span class="function">requestWindowFeature</span>(Window<span class="class">.FEATURE_NO_TITLE</span>);
+</code></pre><h3 id="在_Activity_的_Title_中加入进度条">在 Activity 的 Title 中加入进度条</h3>
+<p>为了更友好的用户体验，在处理一些需要花费较长时间的任务时可以使用一个进度条来提示用户“不要着急，我们正在努力的完成你交给的任务”。如下图：<br>在 Activity 的标题栏中显示进度条不失为一个好办法，下面是实现代码：</p>
+<pre><code> <span class="comment">// 不明确进度条</span>
+ <span class="function">requestWindowFeature</span>(Window<span class="class">.FEATURE_INDETERMINATE_PROGRESS</span>); 
+ <span class="function">setContentView</span>(R<span class="class">.layout</span><span class="class">.main</span>); 
+ <span class="function">setProgressBarIndeterminateVisibility</span>(true); 
+
+ <span class="comment">// 明确进度条</span>
+ <span class="function">requestWindowFeature</span>(Window<span class="class">.FEATURE_PROGRESS</span>); 
+ <span class="function">setContentView</span>(R<span class="class">.layout</span><span class="class">.main</span>); 
+ <span class="function">setProgress</span>(5000);
+</code></pre><h3 id="Activity截屏">Activity截屏</h3>
+<pre><code><span class="keyword">package</span> com.gaolei.framework.android.util;  
+
+
+
+<span class="keyword">import</span> java.io.File;  
+
+<span class="keyword">import</span> java.io.FileNotFoundException;  
+
+<span class="keyword">import</span> java.io.FileOutputStream;  
+
+<span class="keyword">import</span> java.io.IOException;  
+
+
+
+<span class="keyword">import</span> android.app.Activity;  
+
+<span class="keyword">import</span> android.graphics.Bitmap;  
+
+<span class="keyword">import</span> android.graphics.Rect;  
+
+<span class="keyword">import</span> android.view.View;  
+
+
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScreenShot</span> </span>{  
+
+
+
+    <span class="keyword">private</span> <span class="keyword">static</span> Bitmap <span class="title">takeScreenShot</span>(Activity activity) {  
+
+        <span class="comment">// View是你需要截图的View  </span>
+
+        View view = activity.getWindow().getDecorView();  
+
+        view.setDrawingCacheEnabled(<span class="keyword">true</span>);  
+
+        view.buildDrawingCache();  
+
+        Bitmap b1 = view.getDrawingCache();  
+
+
+
+        <span class="comment">// 获取状态栏高度  </span>
+
+        Rect frame = <span class="keyword">new</span> Rect();  
+
+        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);  
+
+        <span class="keyword">int</span> statusBarHeight = frame.top;  
+
+
+
+        <span class="comment">// 获取屏幕长和高  </span>
+
+        <span class="keyword">int</span> width = activity.getWindowManager().getDefaultDisplay().getWidth();  
+
+        <span class="keyword">int</span> height = activity.getWindowManager().getDefaultDisplay()  
+
+                .getHeight();  
+
+        <span class="comment">// 去掉标题栏  </span>
+
+        Bitmap b = Bitmap.createBitmap(b1, <span class="number">0</span>, statusBarHeight, width, height  
+
+                - statusBarHeight);  
+
+        view.destroyDrawingCache();  
+
+        <span class="keyword">return</span> b;  
+
+    }  
+
+
+
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">savePic</span>(Bitmap b, File filePath) {  
+
+        FileOutputStream fos = <span class="keyword">null</span>;  
+
+        <span class="keyword">try</span> {  
+
+            fos = <span class="keyword">new</span> FileOutputStream(filePath);  
+
+            <span class="keyword">if</span> (<span class="keyword">null</span> != fos) {  
+
+                b.compress(Bitmap.CompressFormat.PNG, <span class="number">100</span>, fos);  
+
+                fos.flush();  
+
+                fos.close();  
+
+            }  
+
+        } <span class="keyword">catch</span> (FileNotFoundException e) {  
+
+            <span class="comment">// e.printStackTrace();  </span>
+
+        } <span class="keyword">catch</span> (IOException e) {  
+
+            <span class="comment">// e.printStackTrace();  </span>
+
+        }  
+
+    }  
+
+
+
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">shoot</span>(Activity a, File filePath) {  
+
+        <span class="keyword">if</span> (filePath == <span class="keyword">null</span>) {  
+
+            <span class="keyword">return</span>;  
+
+        }  
+
+        <span class="keyword">if</span> (!filePath.getParentFile().exists()) {  
+
+            filePath.getParentFile().mkdirs();  
+
+        }  
+
+        ScreenShot.savePic(ScreenShot.takeScreenShot(a), filePath);  
+
+    }  
+
+}  
+</code></pre>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android/">android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/andriod-Activity/">andriod Activity</a>
+  </div>
+
+</div>
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://wangxh89.github.io/2014/12/30/android_activity/" data-title="andriod Activity总结及技巧 | wangxiaohu&#39;s blog" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2014/12/29/andorid_service/"  title="andriod Service总结">
+ <strong>下一篇：</strong><br/> 
+ <span>andriod Service总结
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Activity启动模式_及_Intent_Flags_与_栈"><span class="toc-number">1.</span> <span class="toc-text">Activity启动模式 及 Intent Flags 与 栈</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Activity启动模式"><span class="toc-number">1.1.</span> <span class="toc-text">Activity启动模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#standard"><span class="toc-number">1.1.1.</span> <span class="toc-text">standard</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#singleTop"><span class="toc-number">1.1.2.</span> <span class="toc-text">singleTop</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#singleTask"><span class="toc-number">1.1.3.</span> <span class="toc-text">singleTask</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#singleInstance"><span class="toc-number">1.1.4.</span> <span class="toc-text">singleInstance</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Intent_Flags"><span class="toc-number">1.2.</span> <span class="toc-text">Intent Flags</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Intent-FLAG_ACTIVITY_NEW_TASK_（默认）"><span class="toc-number">1.2.1.</span> <span class="toc-text">Intent.FLAG_ACTIVITY_NEW_TASK （默认）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FLAG_ACTIVITY_SINGLE_TOP"><span class="toc-number">1.2.2.</span> <span class="toc-text">FLAG_ACTIVITY_SINGLE_TOP</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FLAG_ACTIVITY_CLEAR_TOP"><span class="toc-number">1.2.3.</span> <span class="toc-text">FLAG_ACTIVITY_CLEAR_TOP</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FLAG_ACTIVITY_BROUGHT_TO_FRONT"><span class="toc-number">1.2.4.</span> <span class="toc-text">FLAG_ACTIVITY_BROUGHT_TO_FRONT</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FLAG_ACTIVITY_NO_USER_ACTION"><span class="toc-number">1.2.5.</span> <span class="toc-text">FLAG_ACTIVITY_NO_USER_ACTION</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FLAG_ACTIVITY_NO_HISTORY"><span class="toc-number">1.2.6.</span> <span class="toc-text">FLAG_ACTIVITY_NO_HISTORY</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#taskAffinity"><span class="toc-number">1.2.7.</span> <span class="toc-text">taskAffinity</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Activity技巧"><span class="toc-number">2.</span> <span class="toc-text">Activity技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#不让Activity实例化多次"><span class="toc-number">2.1.</span> <span class="toc-text">不让Activity实例化多次</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Activity_finish();"><span class="toc-number">2.2.</span> <span class="toc-text">Activity  finish();</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#锁定_Activity_运行时的屏幕方向"><span class="toc-number">2.3.</span> <span class="toc-text">锁定 Activity 运行时的屏幕方向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#全屏的_Activity"><span class="toc-number">2.4.</span> <span class="toc-text">全屏的 Activity</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在_Activity_的_Title_中加入进度条"><span class="toc-number">2.5.</span> <span class="toc-text">在 Activity 的 Title 中加入进度条</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Activity截屏"><span class="toc-number">2.6.</span> <span class="toc-text">Activity截屏</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/Flex/" title="Flex">Flex<sup>2</sup></a></li>
+		
+			<li><a href="/categories/IOS/" title="IOS">IOS<sup>2</sup></a></li>
+		
+			<li><a href="/categories/android/" title="android">android<sup>3</sup></a></li>
+		
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/andriod-Activity/" title="andriod Activity">andriod Activity<sup>1</sup></a></li>
+		
+			<li><a href="/tags/andriod-Service/" title="andriod Service">andriod Service<sup>1</sup></a></li>
+		
+			<li><a href="/tags/IOS追踪用户设备/" title="IOS追踪用户设备">IOS追踪用户设备<sup>1</sup></a></li>
+		
+			<li><a href="/tags/andriod推送/" title="andriod推送">andriod推送<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Flex面试题/" title="Flex面试题">Flex面试题<sup>1</sup></a></li>
+		
+			<li><a href="/tags/RequireJs/" title="RequireJs">RequireJs<sup>1</sup></a></li>
+		
+			<li><a href="/tags/FlexMonkey/" title="FlexMonkey">FlexMonkey<sup>1</sup></a></li>
+		
+			<li><a href="/tags/FlexAutomation/" title="FlexAutomation">FlexAutomation<sup>1</sup></a></li>
+		
+			<li><a href="/tags/UIWebView/" title="UIWebView">UIWebView<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jquery/" title="jquery">jquery<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+      <li><a href="http://wuchong.me" target="_blank" title="WuChong">Jark's Blog</a></li>
+      <li><a href="http://hexo.io" target="_blank" title="Hexo">Hexo</a></li>
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/1681392324" target="_blank" class="icon-weibo" title="weibo"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Pacman">Jacman</a> © 2014 
+		
+		<a href="http://wangxh89.github.io/about" target="_blank" title="wang.xiaohu">wang.xiaohu</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"wangxh89"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+
+
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<script src="/js/totop.js"></script>
+
+
+
+
+  </body>
+</html>
