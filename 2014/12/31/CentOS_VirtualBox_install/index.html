@@ -4,16 +4,16 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>关于IOS追踪用户设备总结 | wangxiaohu&#39;s blog</title>
+    <title>在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程 | wangxiaohu&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="wang.xiaohu">
     
-    <meta name="description" content="作者： 王小虎日期：2014-12-11
-关于IOS追踪用户设备总结
-一、    完全不能使用方案　
-1、UDID
-设备唯一标识符（Unique Device Identifier）之前被各种国内外统计平台，应用开发商广泛使用，后Apple从2013年05月01日起拒绝接受使用UDID的应用后，立毙">
+    <meta name="description" content="作者： 王小虎日期：2014-12-31
+在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程
+目标
+ 公司10.45.4.30主机，系统为CentOS 6.5，因为IETest无法真实模拟IE6，7，8，9，10，11的环境，需要搭建几台真实环境的虚拟机，进行测试
+如何用Xma">
     
     
     
@@ -74,14 +74,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/12/11/ios_UUID/" title="关于IOS追踪用户设备总结" itemprop="url">关于IOS追踪用户设备总结</a>
+      <a href="/2014/12/31/CentOS_VirtualBox_install/" title="在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程" itemprop="url">在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程</a>
   </h1>
   <p class="article-author">By
        
 		<a href="http://wangxh89.github.io/about" title="wang.xiaohu" target="_blank" itemprop="author">wang.xiaohu</a>
 		
   <p class="article-time">
-    <time datetime="2014-12-11T11:36:10.000Z" itemprop="datePublished"> 发表于 12月 11 2014</time>
+    <time datetime="2014-12-31T05:12:19.000Z" itemprop="datePublished"> 发表于 12月 31 2014</time>
     
   </p>
 </header>
@@ -91,39 +91,73 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#关于IOS追踪用户设备总结"><span class="toc-number">1.</span> <span class="toc-text">关于IOS追踪用户设备总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、_完全不能使用方案_"><span class="toc-number">1.1.</span> <span class="toc-text">一、    完全不能使用方案　</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、UDID"><span class="toc-number">1.1.1.</span> <span class="toc-text">1、UDID</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、_Mac地址"><span class="toc-number">1.1.2.</span> <span class="toc-text">2、    Mac地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、_第三方解决方案OPENUDID"><span class="toc-number">1.1.3.</span> <span class="toc-text">3、 第三方解决方案OPENUDID</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、_各有缺点的方案"><span class="toc-number">1.2.</span> <span class="toc-text">二、    各有缺点的方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、_CFUUID"><span class="toc-number">1.2.1.</span> <span class="toc-text">1、    CFUUID</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、_DeviceToken"><span class="toc-number">1.2.2.</span> <span class="toc-text">2、    DeviceToken</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、_Apple建议方案"><span class="toc-number">1.2.3.</span> <span class="toc-text">3、    Apple建议方案</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、_参考"><span class="toc-number">1.3.</span> <span class="toc-text">三、    参考</span></a></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#在公司CentOS_6-5_下安装VirtualBox搭建XP虚拟机过程"><span class="toc-number">1.</span> <span class="toc-text">在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#目标"><span class="toc-number">1.1.</span> <span class="toc-text">目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何用Xmanger远程连接10-45-4-30"><span class="toc-number">1.2.</span> <span class="toc-text">如何用Xmanger远程连接10.45.4.30</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装VirtualBox"><span class="toc-number">1.3.</span> <span class="toc-text">安装VirtualBox</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行VirtualBox"><span class="toc-number">1.4.</span> <span class="toc-text">运行VirtualBox</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装XP"><span class="toc-number">1.5.</span> <span class="toc-text">安装XP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注意"><span class="toc-number">1.6.</span> <span class="toc-text">注意</span></a></li></ol></li></ol>
 		
 		</div>
 		
-		<p><em>作者： 王小虎</em><br><em>日期：2014-12-11</em></p>
-<h2 id="关于IOS追踪用户设备总结">关于IOS追踪用户设备总结</h2>
-<h3 id="一、_完全不能使用方案_">一、    完全不能使用方案　</h3>
-<h4 id="1、UDID">1、UDID</h4>
-<p>设备唯一标识符（Unique Device Identifier）之前被各种国内外统计平台，应用开发商广泛使用，后Apple从2013年05月01日起拒绝接受使用UDID的应用后，立毙！并且iOS7中已经完全的禁用了它</p>
-<p><a href="https://developer.apple.com/library/ios/releasenotes/iOS70APIDiffs/index.html#//apple_ref/doc/uid/TP40013203" target="_blank" rel="external">https://developer.apple.com/library/ios/releasenotes/iOS70APIDiffs/index.html#//apple_ref/doc/uid/TP40013203</a><br><a href="https://developer.apple.com/library/ios/releasenotes/General/iOS70APIDiffs/index.html#//apple_ref/doc/uid/TP40013203" target="_blank" rel="external">https://developer.apple.com/library/ios/releasenotes/General/iOS70APIDiffs/index.html#//apple_ref/doc/uid/TP40013203</a><br>Removed UIDevice.uniqueIdentifier</p>
-<h4 id="2、_Mac地址">2、    Mac地址</h4>
-<p>苹果并不希望有人通过MAC地址来分辨用户，所以如果你在iOS7系统上查询MAC地址，它现在只会返回02:00:00:00:00:00。 </p>
-<p><a href="https://developer.apple.com/library/iOS/releasenotes/General/RN-iOSSDK-7.0/index.html" target="_blank" rel="external">https://developer.apple.com/library/iOS/releasenotes/General/RN-iOSSDK-7.0/index.html</a></p>
-<p>Networking<br>Notes</p>
-<p>Two low-level networking APIs that used to return a MAC address now return the fixed value 02:00:00:00:00:00. The APIs in question are sysctl (NET_RT_IFLIST) and ioctl (SIOCGIFCONF). Developers using the value of the MAC address should migrate to identifiers such as -[UIDevice identifierForVendor]. This change affects all apps running on iOS 7.</p>
-<h4 id="3、_第三方解决方案OPENUDID">3、 第三方解决方案OPENUDID</h4>
-<p>IOS7 UIPasteboard由共享变为沙盒化了 这样就让OpenUDID不那么有用了。</p>
-<p><a href="http://blog.appsfire.com/udid-is-dead-openudid-is-deprecated-long-live-advertisingidentifier/" target="_blank" rel="external">http://blog.appsfire.com/udid-is-dead-openudid-is-deprecated-long-live-advertisingidentifier/</a></p>
-<h3 id="二、_各有缺点的方案">二、    各有缺点的方案</h3>
-<h4 id="1、_CFUUID">1、    CFUUID</h4>
-<p>就是将用户自己生成唯一标识字符串，然后将唯一标识字符串存放到NSUserDefaults或者keychain中  </p>
-<p>CFUUID 问题：</p>
-<p>  A、每次生成的唯一标识字符串是不一样的，存在NSUserDefaults应用删除后就读取不到了。 存在keychain中必须是用同样证书的应用才能读取。</p>
-<p>B、如果你从一台旧设备中备份文件到新设备中，两台设备就拥有相同的 CFUUID。如果你从临时文件中备份操作系统，就会出现一个设备里存在不同 CFUUID 的情况。</p>
-<h4 id="2、_DeviceToken">2、    DeviceToken</h4>
-<p>这是推送用的令牌，是唯一的，但用户如果没开推送，或者拒绝了，这个就没有了</p>
-<h4 id="3、_Apple建议方案">3、    Apple建议方案</h4>
-<p>新增了两个用于替换uniqueIdentifier的接口，分别是：</p>
-<p>identifierForVendor： 当我们删除了某一个设备上某个开发商的所有APP之后，下次获取将会获取到不同的ID </p>
-<p>advertisingIdentifier： 在同一个设备上的所有App都会取到相同的值，是苹果专门给各广告提供商用来追踪用户而设的，用户可以在 设置|隐私|广告追踪 里重置此id的值，或限制此id的使用，故此id有可能会取不到值。并且如果申请上架的应用里没有广告而使用这个ID的话，审核会不通过</p>
-<h3 id="三、_参考">三、    参考</h3>
-<p>苹果应用审查中关于隐私之一节</p>
-<p><a href="https://developer.apple.com/app-store/review/guidelines/#privacy" target="_blank" rel="external">https://developer.apple.com/app-store/review/guidelines/#privacy</a></p>
+		<p><em>作者： 王小虎</em><br><em>日期：2014-12-31</em></p>
+<h2 id="在公司CentOS_6-5_下安装VirtualBox搭建XP虚拟机过程">在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程</h2>
+<h3 id="目标">目标</h3>
+<p> 公司10.45.4.30主机，系统为CentOS 6.5，因为IETest无法真实模拟IE6，7，8，9，10，11的环境，需要搭建几台真实环境的虚拟机，进行测试</p>
+<h3 id="如何用Xmanger远程连接10-45-4-30">如何用Xmanger远程连接10.45.4.30</h3>
+<p>CentOS 6.5默认是连接不上10.45.4.30图形化界面的，需要在CentOS 6.5 开启Xmanager远程桌面登录</p>
+<p>具体操作见：<a href="http://www.linuxidc.com/Linux/2014-03/98548.htm" target="_blank" rel="external">http://www.linuxidc.com/Linux/2014-03/98548.htm</a></p>
+<h3 id="安装VirtualBox">安装VirtualBox</h3>
+<p>下载VirtualBox-4.3.20-96996-Linux_amd64.run<br>我下载的地址是：<a href="http://download.pchome.net/system/sysenhance/down-87894-1.html" target="_blank" rel="external">http://download.pchome.net/system/sysenhance/down-87894-1.html</a><br>通过XBorwer连接10.45.4.30</p>
+<p>在终端运行 ：<br>sh VirtualBox-4.3.20-96996-Linux_amd64.run</p>
+<p><strong>报错： 缺少GCC ，安装GCC</strong></p>
+<pre><code>yum -y <span class="operator"><span class="keyword">install</span> gcc
+装完后输入 gcc <span class="comment">--version进行验证</span></span>
+</code></pre><p><strong>报错： yum [Errno 256] No more mirrors to try 解决方法</strong></p>
+<pre><code>yum clean <span class="literal">all</span>
+yum makecache
+</code></pre><p><strong>报错： Please install the build and header files for your current Linux kernel.</strong></p>
+<pre><code> yum install kernel-devel
+ln -s <span class="regexp">/usr/</span>src<span class="regexp">/kernels/</span><span class="number">2.6</span>.<span class="number">32</span>-<span class="number">504.3</span>.<span class="number">3</span>.el6.x86_64<span class="regexp">/ /</span>usr<span class="regexp">/src/</span>linux
+</code></pre><p>再次安装，终于成功    </p>
+<pre><code>[root@vm Downloads]# sh VirtualBox-4.3.20-96996-Linux_amd64.run 
+Verifying archive integrity... All good.
+Uncompressing VirtualBox for Linux installation............
+VirtualBox Version 4.3.20 r96996 (2014-11-21T14:12:48Z) installer
+Please <span class="operator"><span class="keyword">install</span> the build <span class="keyword">and</span> header files <span class="keyword">for</span> your <span class="keyword">current</span> Linux kernel.
+The <span class="keyword">current</span> kernel <span class="keyword">version</span> <span class="keyword">is</span> <span class="number">2.6</span><span class="number">.32</span>-<span class="number">431.</span>el6.x86_64
+Problems were <span class="keyword">found</span> which would prevent VirtualBox <span class="keyword">from</span> installing.
+Please correct these problems <span class="keyword">and</span> try again.
+[root@vm Downloads]# sh VirtualBox-<span class="number">4.3</span><span class="number">.20</span>-<span class="number">96996</span>-Linux_amd64.run 
+Verifying archive integrity... <span class="keyword">All</span> good.
+Uncompressing VirtualBox <span class="keyword">for</span> Linux installation............
+VirtualBox <span class="keyword">Version</span> <span class="number">4.3</span><span class="number">.20</span> r96996 (<span class="number">2014</span>-<span class="number">11</span>-<span class="number">21</span>T14:<span class="number">12</span>:<span class="number">48</span>Z) installer
+Installing VirtualBox <span class="keyword">to</span> /opt/VirtualBox
+Python <span class="keyword">found</span>: python, installing bindings...
+Building the VirtualBox kernel modules
+
+VirtualBox has been installed successfully.
+
+You will find useful information about <span class="keyword">using</span> VirtualBox <span class="keyword">in</span> the <span class="keyword">user</span> manual
+  /opt/VirtualBox/UserManual.pdf
+<span class="keyword">and</span> <span class="keyword">in</span> the <span class="keyword">user</span> FAQ
+  http://www.virtualbox.org/wiki/User_FAQ
+
+We hope that you enjoy <span class="keyword">using</span> VirtualBox.</span>
+</code></pre><h3 id="运行VirtualBox">运行VirtualBox</h3>
+<p><strong>报错： 根目录报空间不足</strong></p>
+<pre><code>请参考上一篇文章处理 “CentOS 6.5 下根目录报空间不足 处理”
+</code></pre><p><strong>报错：Error:<br>Failed to create the VirtualBox COM object.<br>The application will now terminate.<br>Start tag expected, ‘&lt;’ not found.<br>Location: ‘/home/xxxx/.VirtualBox/VirtualBox.xml’, line 1 (0), column 1.<br>/home/vbox/vbox-3.1.0/src/VBox/Main/VirtualBoxImpl.cpp[420] (nsresult VirtualBox::init()).<br>“xxxx”=你的用户名</strong></p>
+<pre><code><span class="input"><span class="prompt">删除/home/xxxx/.VirtualBox/VirtualBox.xml，然后就可以进入virtualbox，但是发现原来的虚拟机不见了。
+别急，点击菜单中的Machine--&gt;</span> <span class="constant">Add</span> 然后找到 xxx.vbox ，打开就可以了</span>
+</code></pre><h3 id="安装XP">安装XP</h3>
+<p><strong>问题：　ghostxp.iso上的很多工具在virtualbox下都不可用</strong></p>
+<pre><code>    第一次的尝试失败
+    + partitionmagic不能用
+    + 快速<span class="number">4</span>分区不能用
+    + 安装ghostxp到<span class="keyword">C</span>盘不能用
+    + WindowsXpPE是可用的　　但到里面安装系统还是不行
+</code></pre><p>必须使用xp正常安装版</p>
+<p>找了半天，只能通过迅雷下，公司下不了，晚上回家下，地址如下：<br>迅雷下载地址：thunder://QUFodHRwOi8vc29mdC51c2Fpa2EuY24vJUU2JTkzJThEJUU0JUJEJTlDJUU3JUIzJUJCJUU3JUJCJTlGL3dpbmRvd3MvV2luZG93c1hQL1ZMLUltYWdlL01TRE4vemgtaGFuc193aW5kb3dzX3hwX3Byb2Zlc3Npb25hbF93aXRoX3NlcnZpY2VfcGFja18zX3g4Nl9jZF92bF94MTQtNzQwNzAuaXNvWlo=Windows XP pro</p>
+<p>with sp3 VOL 微软原版（简体中文）正版密钥：MRX3F-47B9T-2487J-KWKMF-RPWBY下面，开始体验虚拟机上安装操作系统</p>
+<h3 id="注意">注意</h3>
+<p> virtualbox上面的 Host键 默认是 右Ctrol键</p>
+<p>  virtualbox联网有问题，需要在 设置-&gt; 网络 -&gt; 高级 修改一下网    卡模拟 PCnet -&gt; Intel Pro</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -131,13 +165,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/IOS/">IOS</a>
+  <a class="article-category-link" href="/categories/linux/">linux</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/IOS追踪用户设备/">IOS追踪用户设备</a>
+  <span></span> <a href="/tags/linux-VirtualBox/">linux VirtualBox</a>
   </div>
 
 </div>
@@ -145,7 +179,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://wangxh89.github.io/2014/12/11/ios_UUID/" data-title="关于IOS追踪用户设备总结 | wangxiaohu&#39;s blog" data-tsina="null" class="share clearfix">
+  <div data-url="http://wangxh89.github.io/2014/12/31/CentOS_VirtualBox_install/" data-title="在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程 | wangxiaohu&#39;s blog" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -154,19 +188,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2014/12/29/andorid_service/" title="andriod Service总结">
-  <strong>上一篇：</strong><br/>
-  <span>
-  andriod Service总结</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2014/12/10/android_push/"  title="andriod推送总结">
+<a href="/2014/12/30/android_activity/"  title="andriod Activity总结及技巧">
  <strong>下一篇：</strong><br/> 
- <span>andriod推送总结
+ <span>andriod Activity总结及技巧
 </span>
 </a>
 </div>
@@ -185,7 +211,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#关于IOS追踪用户设备总结"><span class="toc-number">1.</span> <span class="toc-text">关于IOS追踪用户设备总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、_完全不能使用方案_"><span class="toc-number">1.1.</span> <span class="toc-text">一、    完全不能使用方案　</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、UDID"><span class="toc-number">1.1.1.</span> <span class="toc-text">1、UDID</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、_Mac地址"><span class="toc-number">1.1.2.</span> <span class="toc-text">2、    Mac地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、_第三方解决方案OPENUDID"><span class="toc-number">1.1.3.</span> <span class="toc-text">3、 第三方解决方案OPENUDID</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、_各有缺点的方案"><span class="toc-number">1.2.</span> <span class="toc-text">二、    各有缺点的方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、_CFUUID"><span class="toc-number">1.2.1.</span> <span class="toc-text">1、    CFUUID</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、_DeviceToken"><span class="toc-number">1.2.2.</span> <span class="toc-text">2、    DeviceToken</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、_Apple建议方案"><span class="toc-number">1.2.3.</span> <span class="toc-text">3、    Apple建议方案</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、_参考"><span class="toc-number">1.3.</span> <span class="toc-text">三、    参考</span></a></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#在公司CentOS_6-5_下安装VirtualBox搭建XP虚拟机过程"><span class="toc-number">1.</span> <span class="toc-text">在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#目标"><span class="toc-number">1.1.</span> <span class="toc-text">目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何用Xmanger远程连接10-45-4-30"><span class="toc-number">1.2.</span> <span class="toc-text">如何用Xmanger远程连接10.45.4.30</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装VirtualBox"><span class="toc-number">1.3.</span> <span class="toc-text">安装VirtualBox</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行VirtualBox"><span class="toc-number">1.4.</span> <span class="toc-text">运行VirtualBox</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装XP"><span class="toc-number">1.5.</span> <span class="toc-text">安装XP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注意"><span class="toc-number">1.6.</span> <span class="toc-text">注意</span></a></li></ol></li></ol>
  
   </div>
 
