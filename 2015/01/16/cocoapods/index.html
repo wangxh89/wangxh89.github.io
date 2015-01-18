@@ -4,16 +4,17 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Selenium WebDriver在IE chorme firefox浏览器运行 | wangxiaohu&#39;s blog</title>
+    <title>2015-1-16 cocoapods安装及问题解决 | wangxiaohu&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="wang.xiaohu">
     
-    <meta name="description" content="作者： 王小虎日期：2015-1-4
-Selenium WebDriver在IE chorme firefox浏览器运行
-InternetExplorer
-    WebDriver driver = new InternetExplorerDriver();
-    driver.get(&quot;htt">
+    <meta name="description" content="作者： 王小虎日期：2015-1-16 
+如何下载和安装CocoaPods？
+1. 安装ruby
+2. gem sources -- remove https://rubygems.org/
+    gem sources -a http://ruby.taoboa.org/
+    gem sou">
     
     
     
@@ -74,14 +75,14 @@ InternetExplorer
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/01/04/selenium_run_problem/" title="Selenium WebDriver在IE chorme firefox浏览器运行" itemprop="url">Selenium WebDriver在IE chorme firefox浏览器运行</a>
+      <a href="/2015/01/16/cocoapods/" title="2015-1-16 cocoapods安装及问题解决" itemprop="url">2015-1-16 cocoapods安装及问题解决</a>
   </h1>
   <p class="article-author">By
        
 		<a href="http://wangxh89.github.io/about" title="wang.xiaohu" target="_blank" itemprop="author">wang.xiaohu</a>
 		
   <p class="article-time">
-    <time datetime="2015-01-04T13:30:12.000Z" itemprop="datePublished"> 发表于 1月 4 2015</time>
+    <time datetime="2015-01-16T11:36:10.000Z" itemprop="datePublished"> 发表于 1月 16 2015</time>
     
   </p>
 </header>
@@ -91,95 +92,44 @@ InternetExplorer
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Selenium_WebDriver在IE_chorme_firefox浏览器运行"><span class="toc-number">1.</span> <span class="toc-text">Selenium WebDriver在IE chorme firefox浏览器运行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#InternetExplorer"><span class="toc-number">1.1.</span> <span class="toc-text">InternetExplorer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#chrome"><span class="toc-number">1.2.</span> <span class="toc-text">chrome</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#firefox"><span class="toc-number">1.3.</span> <span class="toc-text">firefox</span></a></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#如何下载和安装CocoaPods？"><span class="toc-number">1.</span> <span class="toc-text">如何下载和安装CocoaPods？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何使用CocoaPods？"><span class="toc-number">2.</span> <span class="toc-text">如何使用CocoaPods？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何正确编译运行一个包含CocoPods类库的项目"><span class="toc-number">3.</span> <span class="toc-text">如何正确编译运行一个包含CocoPods类库的项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#出错问题："><span class="toc-number">4.</span> <span class="toc-text">出错问题：</span></a></li></ol>
 		
 		</div>
 		
-		<p><em>作者： 王小虎</em><br><em>日期：2015-1-4</em></p>
-<h2 id="Selenium_WebDriver在IE_chorme_firefox浏览器运行">Selenium WebDriver在IE chorme firefox浏览器运行</h2>
-<h3 id="InternetExplorer">InternetExplorer</h3>
-<pre><code>    WebDriver driver = <span class="keyword">new</span> InternetExplorerDriver();
-    driver.<span class="keyword">get</span>(<span class="string">"http://www.baidu.com"</span>);
-</code></pre><p>  直接运行会报错，的错处理如下：</p>
-<ol>
-<li><p>需要设置IE的Driver到“webdriver.ie.driver”变量中，否则可能遇到报错信息：</p>
-<pre><code> The path <span class="built_in">to</span> <span class="operator">the</span> driver executable must be <span class="built_in">set</span> <span class="keyword">by</span> <span class="operator">the</span> webdriver.ie.driver <span class="keyword">system</span> property; <span class="keyword">for</span> more information, see <span class="keyword">http</span>://code.google.com/p/selenium/wiki/InternetExplorerDriver. The latest <span class="built_in">version</span> can be downloaded <span class="built_in">from</span> <span class="keyword">http</span>://code.google.com/p/selenium/downloads/list
-</code></pre><p> 因为在IE中测试需要IEDriverServer.ext的支持，从官网下载，区分64位和32分，将这个路径赋值给webdriver.ie.driver</p>
-<pre><code> <span class="type">System</span>.setProperty(<span class="string">"webdriver.ie.driver"</span>, <span class="string">"D:\\web\\test\\selenium\\IEDriverServer_x64_2.44.0\\IEDriverServer.exe"</span>);
-</code></pre></li>
-</ol>
-<ol>
-<li><p>如果IE浏览器设置安全性较高，在“Internet Options”中都不要选择“Enable Protected Mode”（保护模式），否则可能遇到如下的错误提示</p>
-<pre><code> Started InternetExplorerDriver server (<span class="number">64</span>-bit)
- <span class="number">2.25</span><span class="number">.2</span><span class="number">.0</span>
- Listening <span class="command"><span class="keyword">on</span> <span class="title">port</span> <span class="title">40961</span></span>
- Exception <span class="operator">in</span> thread <span class="string">"main"</span> org.openqa.selenium.WebDriverException: Unexpected error launching Internet Explorer. Protected Mode settings are <span class="operator">not</span> <span class="operator">the</span> same <span class="keyword">for</span> all zones. Enable Protected Mode must be <span class="built_in">set</span> <span class="built_in">to</span> <span class="operator">the</span> same <span class="built_in">value</span> (enabled <span class="operator">or</span> disabled) <span class="keyword">for</span> all zones. (WARNING: The server did <span class="operator">not</span> provide <span class="keyword">any</span> stacktrace information)
- Command duration <span class="operator">or</span> timeout: <span class="number">1.18</span> <span class="built_in">seconds</span>
- Build info: <span class="built_in">version</span>: <span class="string">'2.25.0'</span>, revision: <span class="string">'17482'</span>, <span class="built_in">time</span>: <span class="string">'2012-07-18 22:18:01'</span>
- System info: os.name: <span class="string">'Windows 7'</span>, os.arch: <span class="string">'x86'</span>, os.<span class="built_in">version</span>: <span class="string">'6.1'</span>, java.<span class="built_in">version</span>: <span class="string">'1.6.0_29'</span>
- Driver info: driver.<span class="built_in">version</span>: InternetExplorerDriver
- Session ID: <span class="number">01e30</span>b64-e403-<span class="number">440</span>c-bed8-<span class="number">4859</span>ef2128f9
-     <span class="keyword">at</span> sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-     <span class="keyword">at</span> sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
-     <span class="keyword">at</span> sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
-     <span class="keyword">at</span> java.lang.reflect.Constructor.newInstance(Unknown Source)
-     <span class="keyword">at</span> org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:<span class="number">188</span>)
-     <span class="keyword">at</span> org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:<span class="number">145</span>)
-     <span class="keyword">at</span> org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:<span class="number">498</span>)
-     <span class="keyword">at</span> org.openqa.selenium.remote.RemoteWebDriver.startSession(RemoteWebDriver.java:<span class="number">182</span>)
-     <span class="keyword">at</span> org.openqa.selenium.remote.RemoteWebDriver.startSession(RemoteWebDriver.java:<span class="number">167</span>)
-     <span class="keyword">at</span> org.openqa.selenium.ie.InternetExplorerDriver.startSession(InternetExplorerDriver.java:<span class="number">133</span>)
-     <span class="keyword">at</span> org.openqa.selenium.ie.InternetExplorerDriver.setup(InternetExplorerDriver.java:<span class="number">106</span>)
-     <span class="keyword">at</span> org.openqa.selenium.ie.InternetExplorerDriver.&lt;init&gt;(InternetExplorerDriver.java:<span class="number">52</span>)
-     <span class="keyword">at</span> com.selenium.test.TempGoogle.main(TempGoogle.java:<span class="number">15</span>)
-</code></pre></li>
-</ol>
-<p>解决方法有两种，一种是修改掉IE的设置，不要在任何情况下使用保护模式（protected mode），另一种即是在运行时设置IE的Capabilities。</p>
-<ol>
-<li><p>最终代码如下</p>
-<pre><code> <span class="type">System</span>.setProperty(<span class="string">"webdriver.ie.driver"</span>, <span class="string">"D:\\web\\test\\selenium\\IEDriverServer_x64_2.44.0\\IEDriverServer.exe"</span>);
- <span class="type">DesiredCapabilities</span> ieCapabilities = <span class="type">DesiredCapabilities</span>.internetExplorer();
- ieCapabilities.setCapability(<span class="type">InternetExplorerDriver</span>.<span class="type">INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS</span>, <span class="literal">true</span>);
- <span class="type">WebDriver</span> driver = new <span class="type">InternetExplorerDriver</span>(ieCapabilities);
-</code></pre></li>
-</ol>
-<pre><code>    driver.<span class="keyword">get</span>(<span class="string">"http://www.baidu.com"</span>);
-    WebElement element = driver.findElement(By.name(<span class="string">"wd"</span>));
-    element.sendKeys(<span class="string">"ztesoft"</span>);
-    element.submit();
-    System.<span class="keyword">out</span>.println(<span class="string">"Page Title is: "</span> + driver.getTitle());
-
-    (<span class="keyword">new</span> WebDriverWait(driver,<span class="number">10</span>)).until(<span class="keyword">new</span> ExpectedCondition&lt;Boolean&gt;() {
-        <span class="keyword">public</span> Boolean <span class="title">apply</span>(WebDriver d) {
-            <span class="keyword">return</span> d.getTitle().toLowerCase().startsWith(<span class="string">"ztesoft"</span>);
-        }
-    });
-
-    System.<span class="keyword">out</span>.println(<span class="string">"page title is: "</span> + driver.getTitle());
-    driver.quit();
-</code></pre><h3 id="chrome">chrome</h3>
-<p>在Chrome浏览器上运行测试脚本，首先需要下载ChromeDriver.exe<br>按操作系统区分 </p>
-<p>chromedriver_win32 </p>
-<p>chromedriver_mac32</p>
-<p>chromedriver_linux64<br>设置变量 “webdriver.chrome.driver”为对应的路径</p>
-<h3 id="firefox">firefox</h3>
-<p> Firefox是默认安装路径，webdriver可以正常访问找到它。<br>如果非默认路径，需要设置下</p>
-<pre><code><span class="type">System</span>.setProperty(<span class="string">"webdriver.firefox.bin"</span>, <span class="string">"C:\\Program Files\\Mozilla Firefox\\firefox.exe"</span>);   
-<span class="type">WebDriver</span> webDriver = new <span class="type">FirefoxDriver</span>(); 
-</code></pre>  
+		<p><em>作者： 王小虎</em><br><em>日期：2015-1-16 </em></p>
+<h3 id="如何下载和安装CocoaPods？">如何下载和安装CocoaPods？</h3>
+<pre><code><span class="number">1</span>. 安装ruby
+<span class="number">2</span>. gem sources -- remove https://rubygems.org/
+    gem sources <span class="operator">-a</span> http://ruby.taoboa.org/
+    gem sources <span class="operator">-l</span>
+<span class="number">3</span>. <span class="built_in">sudo</span> gem install cocoapods
+</code></pre><h3 id="如何使用CocoaPods？">如何使用CocoaPods？</h3>
+<pre><code><span class="bullet">1. </span>pod search AFNetworking
+<span class="bullet">2. </span>vi Podfile
+<span class="bullet">3. </span>pod "AFNetowrking", '~&gt;2.0"
+<span class="bullet">4. </span>pod install
+<span class="bullet">5. </span>双击 *.xcworkspace
+</code></pre><h3 id="如何正确编译运行一个包含CocoPods类库的项目">如何正确编译运行一个包含CocoPods类库的项目</h3>
+<pre><code><span class="number">1</span>. pod <span class="keyword">update</span>
+</code></pre><h3 id="出错问题：">出错问题：</h3>
+<p> Q：执行  sudo gem install cocoapods  报错ERROR: Could not find a valid gem ‘cocoapods’ (&gt;= 0) in any repository</p>
+<p>A：需要切换到root用户下安装。权限的问题，没有在root下面 。 sudo -i  或者 sudo su 进入到root之后再执行 sudo gem install cocoapods </p>
+<p>Q:执行pod search AFNetworking 报错：No such file or directory - /Users/spy/.cocoapods/repos</p>
+<p>A：执行pod setup 还报错 查发现用户没有权限 赋权chown -R spy spy 成功解决</p>
+  
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/test/">test</a>
+  <a class="article-category-link" href="/categories/IOS/">IOS</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/test-Selenium/">test Selenium</a>
+  <span></span> <a href="/tags/cocoapods/">cocoapods</a>
   </div>
 
 </div>
@@ -187,7 +137,7 @@ InternetExplorer
 
 <div class="article-share" id="share">
 
-  <div data-url="http://wangxh89.github.io/2015/01/04/selenium_run_problem/" data-title="Selenium WebDriver在IE chorme firefox浏览器运行 | wangxiaohu&#39;s blog" data-tsina="null" class="share clearfix">
+  <div data-url="http://wangxh89.github.io/2015/01/16/cocoapods/" data-title="2015-1-16 cocoapods安装及问题解决 | wangxiaohu&#39;s blog" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -196,19 +146,11 @@ InternetExplorer
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/01/04/selenium_problem/" title="Selenium2进行自动化测试遇到的问题总结">
-  <strong>上一篇：</strong><br/>
-  <span>
-  Selenium2进行自动化测试遇到的问题总结</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2014/12/31/CentOS_VirtualBox_install/"  title="在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程">
+<a href="/2015/01/04/selenium_problem/"  title="Selenium2进行自动化测试遇到的问题总结">
  <strong>下一篇：</strong><br/> 
- <span>在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程
+ <span>Selenium2进行自动化测试遇到的问题总结
 </span>
 </a>
 </div>
@@ -227,7 +169,7 @@ InternetExplorer
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Selenium_WebDriver在IE_chorme_firefox浏览器运行"><span class="toc-number">1.</span> <span class="toc-text">Selenium WebDriver在IE chorme firefox浏览器运行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#InternetExplorer"><span class="toc-number">1.1.</span> <span class="toc-text">InternetExplorer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#chrome"><span class="toc-number">1.2.</span> <span class="toc-text">chrome</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#firefox"><span class="toc-number">1.3.</span> <span class="toc-text">firefox</span></a></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#如何下载和安装CocoaPods？"><span class="toc-number">1.</span> <span class="toc-text">如何下载和安装CocoaPods？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何使用CocoaPods？"><span class="toc-number">2.</span> <span class="toc-text">如何使用CocoaPods？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何正确编译运行一个包含CocoPods类库的项目"><span class="toc-number">3.</span> <span class="toc-text">如何正确编译运行一个包含CocoPods类库的项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#出错问题："><span class="toc-number">4.</span> <span class="toc-text">出错问题：</span></a></li></ol>
  
   </div>
 
