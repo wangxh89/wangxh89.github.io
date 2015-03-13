@@ -4,16 +4,16 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程 | wangxiaohu&#39;s blog</title>
+    <title>storyboard中使用 TTTattibutedLabel 及didSelectLinkWithURL没有调用问题 | wangxiaohu&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="wang.xiaohu">
     
-    <meta name="description" content="作者： 王小虎日期：2014-12-31
-在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程
-目标
- 公司10.45.4.30主机，系统为CentOS 6.5，因为IETest无法真实模拟IE6，7，8，9，10，11的环境，需要搭建几台真实环境的虚拟机，进行测试
-如何用Xma">
+    <meta name="description" content="作者： 王小虎日期：2015-3-13
+storyboard中使用 TTTattibutedLabel 及didSelectLinkWithURL没有调用问题
+storyboard中使用 TTTattibutedLabel
+
+Go to Storyboard and select the UILab">
     
     
     
@@ -74,14 +74,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/12/31/CentOS_VirtualBox_install/" title="在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程" itemprop="url">在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程</a>
+      <a href="/2015/03/13/ios_TTTattibuteLabel/" title="storyboard中使用 TTTattibutedLabel 及didSelectLinkWithURL没有调用问题" itemprop="url">storyboard中使用 TTTattibutedLabel 及didSelectLinkWithURL没有调用问题</a>
   </h1>
   <p class="article-author">By
        
 		<a href="http://wangxh89.github.io/about" title="wang.xiaohu" target="_blank" itemprop="author">wang.xiaohu</a>
 		
   <p class="article-time">
-    <time datetime="2014-12-31T05:12:19.000Z" itemprop="datePublished"> 发表于 12月 31 2014</time>
+    <time datetime="2015-03-13T15:22:16.000Z" itemprop="datePublished"> 发表于 3月 13 2015</time>
     
   </p>
 </header>
@@ -91,87 +91,88 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#在公司CentOS_6-5_下安装VirtualBox搭建XP虚拟机过程"><span class="toc-number">1.</span> <span class="toc-text">在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#目标"><span class="toc-number">1.1.</span> <span class="toc-text">目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何用Xmanger远程连接10-45-4-30"><span class="toc-number">1.2.</span> <span class="toc-text">如何用Xmanger远程连接10.45.4.30</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装VirtualBox"><span class="toc-number">1.3.</span> <span class="toc-text">安装VirtualBox</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行VirtualBox"><span class="toc-number">1.4.</span> <span class="toc-text">运行VirtualBox</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装XP"><span class="toc-number">1.5.</span> <span class="toc-text">安装XP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注意"><span class="toc-number">1.6.</span> <span class="toc-text">注意</span></a></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#storyboard中使用_TTTattibutedLabel_及didSelectLinkWithURL没有调用问题"><span class="toc-number">1.</span> <span class="toc-text">storyboard中使用 TTTattibutedLabel 及didSelectLinkWithURL没有调用问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#storyboard中使用_TTTattibutedLabel"><span class="toc-number">1.1.</span> <span class="toc-text">storyboard中使用 TTTattibutedLabel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#didSelectLinkWithURL没有调用问题"><span class="toc-number">1.2.</span> <span class="toc-text">didSelectLinkWithURL没有调用问题</span></a></li></ol></li></ol>
 		
 		</div>
 		
-		<p><em>作者： 王小虎</em><br><em>日期：2014-12-31</em></p>
-<h2 id="在公司CentOS_6-5_下安装VirtualBox搭建XP虚拟机过程">在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程</h2>
-<h3 id="目标">目标</h3>
-<p> 公司10.45.4.30主机，系统为CentOS 6.5，因为IETest无法真实模拟IE6，7，8，9，10，11的环境，需要搭建几台真实环境的虚拟机，进行测试</p>
-<h3 id="如何用Xmanger远程连接10-45-4-30">如何用Xmanger远程连接10.45.4.30</h3>
-<p>CentOS 6.5默认是连接不上10.45.4.30图形化界面的，需要在CentOS 6.5 开启Xmanager远程桌面登录</p>
-<p>具体操作见：<a href="http://www.linuxidc.com/Linux/2014-03/98548.htm" target="_blank" rel="external">http://www.linuxidc.com/Linux/2014-03/98548.htm</a></p>
-<h3 id="安装VirtualBox">安装VirtualBox</h3>
-<p>下载VirtualBox-4.3.20-96996-Linux_amd64.run<br>我下载的地址是：<a href="http://download.pchome.net/system/sysenhance/down-87894-1.html" target="_blank" rel="external">http://download.pchome.net/system/sysenhance/down-87894-1.html</a><br>通过XBorwer连接10.45.4.30</p>
-<p>在终端运行 ：<br>sh VirtualBox-4.3.20-96996-Linux_amd64.run</p>
-<p><strong>报错： 缺少GCC ，安装GCC</strong></p>
-<pre><code>yum -y <span class="operator"><span class="keyword">install</span> gcc
-装完后输入 gcc <span class="comment">--version进行验证</span></span>
-</code></pre><p><strong>报错： yum [Errno 256] No more mirrors to try 解决方法</strong></p>
-<pre><code>yum clean <span class="literal">all</span>
-yum makecache
-</code></pre><p><strong>报错： Please install the build and header files for your current Linux kernel.</strong></p>
-<pre><code> yum install kernel-devel
-ln -s <span class="regexp">/usr/</span>src<span class="regexp">/kernels/</span><span class="number">2.6</span>.<span class="number">32</span>-<span class="number">504.3</span>.<span class="number">3</span>.el6.x86_64<span class="regexp">/ /</span>usr<span class="regexp">/src/</span>linux
-</code></pre><p>再次安装，终于成功    </p>
-<pre><code>[root@vm Downloads]# sh VirtualBox-4.3.20-96996-Linux_amd64.run 
-Verifying archive integrity... All good.
-Uncompressing VirtualBox for Linux installation............
-VirtualBox Version 4.3.20 r96996 (2014-11-21T14:12:48Z) installer
-Please <span class="operator"><span class="keyword">install</span> the build <span class="keyword">and</span> header files <span class="keyword">for</span> your <span class="keyword">current</span> Linux kernel.
-The <span class="keyword">current</span> kernel <span class="keyword">version</span> <span class="keyword">is</span> <span class="number">2.6</span><span class="number">.32</span>-<span class="number">431.</span>el6.x86_64
-Problems were <span class="keyword">found</span> which would prevent VirtualBox <span class="keyword">from</span> installing.
-Please correct these problems <span class="keyword">and</span> try again.
-[root@vm Downloads]# sh VirtualBox-<span class="number">4.3</span><span class="number">.20</span>-<span class="number">96996</span>-Linux_amd64.run 
-Verifying archive integrity... <span class="keyword">All</span> good.
-Uncompressing VirtualBox <span class="keyword">for</span> Linux installation............
-VirtualBox <span class="keyword">Version</span> <span class="number">4.3</span><span class="number">.20</span> r96996 (<span class="number">2014</span>-<span class="number">11</span>-<span class="number">21</span>T14:<span class="number">12</span>:<span class="number">48</span>Z) installer
-Installing VirtualBox <span class="keyword">to</span> /opt/VirtualBox
-Python <span class="keyword">found</span>: python, installing bindings...
-Building the VirtualBox kernel modules
+		<p><em>作者： 王小虎</em><br><em>日期：2015-3-13</em></p>
+<h2 id="storyboard中使用_TTTattibutedLabel_及didSelectLinkWithURL没有调用问题">storyboard中使用 TTTattibutedLabel 及didSelectLinkWithURL没有调用问题</h2>
+<h3 id="storyboard中使用_TTTattibutedLabel">storyboard中使用 TTTattibutedLabel</h3>
+<ul>
+<li>Go to Storyboard and select the UILabel  and change its class to TTTAttributedLabe</li>
+<li><p>关联代码</p>
+<pre><code>  <span class="keyword">@property</span> (<span class="keyword">weak</span>, <span class="keyword">nonatomic</span>) <span class="keyword">IBOutlet</span> TTTAttributedLabel *tips;
+</code></pre></li>
+<li><p>增加链接</p>
+<pre><code>   <span class="keyword">self</span><span class="variable">.tips</span><span class="variable">.enabledTextCheckingTypes</span> = NSTextCheckingTypeLink;
+  <span class="keyword">self</span><span class="variable">.tips</span><span class="variable">.delegate</span> = <span class="keyword">self</span>;
+  <span class="keyword">self</span><span class="variable">.tips</span><span class="variable">.font</span> = [<span class="built_in">UIFont</span> systemFontOfSize:<span class="number">12</span>];
 
-VirtualBox has been installed successfully.
+  [<span class="keyword">self</span><span class="variable">.tips</span> setText:_(<span class="string">@"注册即视为同意《服务协议》"</span>)]; <span class="comment">// 注册即视为同意《服务协议》</span>
+  <span class="built_in">NSRange</span> range = [<span class="keyword">self</span><span class="variable">.tips</span><span class="variable">.text</span> rangeOfString:<span class="string">@"服务协议"</span>];
+  [<span class="keyword">self</span><span class="variable">.tips</span> addLinkToURL:[<span class="built_in">NSURL</span> URLWithString:<span class="string">@"http://10.45.4.30:8080/mip/m/userLincese"</span>] withRange:range];
+</code></pre></li>
+<li><p>处理回调</p>
+<pre><code>  <span class="preprocessor">#pragma mark - TTTAttributedLabelDelegate</span>
 
-You will find useful information about <span class="keyword">using</span> VirtualBox <span class="keyword">in</span> the <span class="keyword">user</span> manual
-  /opt/VirtualBox/UserManual.pdf
-<span class="keyword">and</span> <span class="keyword">in</span> the <span class="keyword">user</span> FAQ
-  http://www.virtualbox.org/wiki/User_FAQ
+  - (<span class="keyword">void</span>)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(<span class="built_in">NSURL</span> *)url
+  {
+      [[[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:<span class="keyword">self</span> cancelButtonTitle:_(<span class="string">@"CANCEL"</span>) destructiveButtonTitle:<span class="literal">nil</span> otherButtonTitles:_(<span class="string">@"OPEN_LINK"</span>), <span class="literal">nil</span>] showInView:<span class="keyword">self</span><span class="variable">.view</span>];
+  }
 
-We hope that you enjoy <span class="keyword">using</span> VirtualBox.</span>
-</code></pre><h3 id="运行VirtualBox">运行VirtualBox</h3>
-<p><strong>报错： 根目录报空间不足</strong></p>
-<pre><code>请参考上一篇文章处理 “CentOS 6.5 下根目录报空间不足 处理”
-</code></pre><p><strong>报错：Error:<br>Failed to create the VirtualBox COM object.<br>The application will now terminate.<br>Start tag expected, ‘&lt;’ not found.<br>Location: ‘/home/xxxx/.VirtualBox/VirtualBox.xml’, line 1 (0), column 1.<br>/home/vbox/vbox-3.1.0/src/VBox/Main/VirtualBoxImpl.cpp[420] (nsresult VirtualBox::init()).<br>“xxxx”=你的用户名</strong></p>
-<pre><code><span class="input"><span class="prompt">删除/home/xxxx/.VirtualBox/VirtualBox.xml，然后就可以进入virtualbox，但是发现原来的虚拟机不见了。
-别急，点击菜单中的Machine--&gt;</span> <span class="constant">Add</span> 然后找到 xxx.vbox ，打开就可以了</span>
-</code></pre><h3 id="安装XP">安装XP</h3>
-<p><strong>问题：　ghostxp.iso上的很多工具在virtualbox下都不可用</strong></p>
-<pre><code>    第一次的尝试失败
-    + partitionmagic不能用
-    + 快速<span class="number">4</span>分区不能用
-    + 安装ghostxp到<span class="keyword">C</span>盘不能用
-    + WindowsXpPE是可用的　　但到里面安装系统还是不行
-</code></pre><p>必须使用xp正常安装版</p>
-<p>找了半天，只能通过迅雷下，公司下不了，晚上回家下，地址如下：<br>迅雷下载地址：thunder://QUFodHRwOi8vc29mdC51c2Fpa2EuY24vJUU2JTkzJThEJUU0JUJEJTlDJUU3JUIzJUJCJUU3JUJCJTlGL3dpbmRvd3MvV2luZG93c1hQL1ZMLUltYWdlL01TRE4vemgtaGFuc193aW5kb3dzX3hwX3Byb2Zlc3Npb25hbF93aXRoX3NlcnZpY2VfcGFja18zX3g4Nl9jZF92bF94MTQtNzQwNzAuaXNvWlo=Windows XP pro</p>
-<p>with sp3 VOL 微软原版（简体中文）正版密钥：MRX3F-47B9T-2487J-KWKMF-RPWBY下面，开始体验虚拟机上安装操作系统</p>
-<h3 id="注意">注意</h3>
-<p> virtualbox上面的 Host键 默认是 右Ctrol键</p>
-<p>  virtualbox联网有问题，需要在 设置-&gt; 网络 -&gt; 高级 修改一下网    卡模拟 PCnet -&gt; Intel Pro</p>
-  
+  <span class="preprocessor">#pragma mark - UIActionSheetDelegate</span>
+
+  - (<span class="keyword">void</span>)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(<span class="built_in">NSInteger</span>)buttonIndex {
+      <span class="keyword">if</span> (buttonIndex == actionSheet<span class="variable">.cancelButtonIndex</span>) {
+          <span class="keyword">return</span>;
+      }
+
+      [[<span class="built_in">UIApplication</span> sharedApplication] openURL:[<span class="built_in">NSURL</span> URLWithString:actionSheet<span class="variable">.title</span>]];
+  }
+</code></pre></li>
+</ul>
+<h3 id="didSelectLinkWithURL没有调用问题">didSelectLinkWithURL没有调用问题</h3>
+<ul>
+<li><p>第一次处理</p>
+<p>参考连接<a href="http://stackoverflow.com/questions/17796512/ios-tttattributedlabel-delegate-didselectlinkwithurl-not-getting-called" target="_blank" rel="external">http://stackoverflow.com/questions/17796512/ios-tttattributedlabel-delegate-didselectlinkwithurl-not-getting-called</a><br>把 “User Interaction Enabled” 给打钩 ，并在代码中设置</p>
+<p>  label.userInteractionEnabled = YES;<br>没有效果</p>
+</li>
+<li><p>第二次处理</p>
+<p>发现我在代码中侦听了整个视图的Tap事件</p>
+<ul>
+<li><p>(void)addTap<br>{<br>  UITapGestureRecognizer * tapGestuer =<br>  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hiddenKeyboard:)];<br>  tapGestuer.numberOfTapsRequired = 1;<br>  tapGestuer.delegate = self;<br>  [self.view addGestureRecognizer:tapGestuer];<br>}</p>
+<p>-(void)hiddenKeyboard:(UITapGestureRecognizer*)gesture<br>{<br>  [self.view endEditing:YES];<br>}</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>   UITapGestureRecognizer会隐藏了一切能响应用户Tap的控件<br>   应当是这个问题，导致TTTattibutedLabel 侦听不到事件，所以无法在回调中使用.</p>
+<p>   还好UITapGestureRecognizer有过滤功能，它能够让你选择哪些控件需要响应UITapGestureRecognizer哪些不需要</p>
+<p>处理措施如下：<br>实现UIGestureRecognizerDelegate委托的如下方法，YES是需要响应，NO为不需要响应</p>
+<pre><code><span class="comment">//如果输入框都没有获取焦点，也就是没有弹出键盘，则都不需要响应</span>
+
+<span class="preprocessor">#pragma mark - </span>
+- (<span class="built_in">BOOL</span>)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    <span class="keyword">if</span> (![<span class="keyword">self</span><span class="variable">.userNameTextField</span> isFirstResponder] &amp;&amp; ![<span class="keyword">self</span><span class="variable">.userPassTextField</span> isFirstResponder] &amp;&amp; ![<span class="keyword">self</span><span class="variable">.verifyCodeTextField</span> isFirstResponder]) {
+        <span class="keyword">return</span> <span class="literal">NO</span>;
+    }
+    <span class="keyword">return</span> <span class="literal">YES</span>;
+}
+</code></pre>  
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/linux/">linux</a>
+  <a class="article-category-link" href="/categories/IOS/">IOS</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/linux-VirtualBox/">linux VirtualBox</a>
+  <span></span> <a href="/tags/IOS-TTTattibutedLabel/">IOS TTTattibutedLabel</a>
   </div>
 
 </div>
@@ -179,7 +180,7 @@ We hope that you enjoy <span class="keyword">using</span> VirtualBox.</span>
 
 <div class="article-share" id="share">
 
-  <div data-url="http://wangxh89.github.io/2014/12/31/CentOS_VirtualBox_install/" data-title="在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程 | wangxiaohu&#39;s blog" data-tsina="null" class="share clearfix">
+  <div data-url="http://wangxh89.github.io/2015/03/13/ios_TTTattibuteLabel/" data-title="storyboard中使用 TTTattibutedLabel 及didSelectLinkWithURL没有调用问题 | wangxiaohu&#39;s blog" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -188,19 +189,11 @@ We hope that you enjoy <span class="keyword">using</span> VirtualBox.</span>
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/01/04/selenium_run_problem/" title="Selenium WebDriver在IE chorme firefox浏览器运行">
-  <strong>上一篇：</strong><br/>
-  <span>
-  Selenium WebDriver在IE chorme firefox浏览器运行</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2014/12/30/CentOS_notEnough/"  title="在公司CentOS 6.5 下根目录报空间不足 处理">
+<a href="/2015/01/16/cocoapods/"  title="2015-1-16 cocoapods安装及问题解决">
  <strong>下一篇：</strong><br/> 
- <span>在公司CentOS 6.5 下根目录报空间不足 处理
+ <span>2015-1-16 cocoapods安装及问题解决
 </span>
 </a>
 </div>
@@ -219,7 +212,7 @@ We hope that you enjoy <span class="keyword">using</span> VirtualBox.</span>
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#在公司CentOS_6-5_下安装VirtualBox搭建XP虚拟机过程"><span class="toc-number">1.</span> <span class="toc-text">在公司CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#目标"><span class="toc-number">1.1.</span> <span class="toc-text">目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何用Xmanger远程连接10-45-4-30"><span class="toc-number">1.2.</span> <span class="toc-text">如何用Xmanger远程连接10.45.4.30</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装VirtualBox"><span class="toc-number">1.3.</span> <span class="toc-text">安装VirtualBox</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行VirtualBox"><span class="toc-number">1.4.</span> <span class="toc-text">运行VirtualBox</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装XP"><span class="toc-number">1.5.</span> <span class="toc-text">安装XP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注意"><span class="toc-number">1.6.</span> <span class="toc-text">注意</span></a></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#storyboard中使用_TTTattibutedLabel_及didSelectLinkWithURL没有调用问题"><span class="toc-number">1.</span> <span class="toc-text">storyboard中使用 TTTattibutedLabel 及didSelectLinkWithURL没有调用问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#storyboard中使用_TTTattibutedLabel"><span class="toc-number">1.1.</span> <span class="toc-text">storyboard中使用 TTTattibutedLabel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#didSelectLinkWithURL没有调用问题"><span class="toc-number">1.2.</span> <span class="toc-text">didSelectLinkWithURL没有调用问题</span></a></li></ol></li></ol>
  
   </div>
 
