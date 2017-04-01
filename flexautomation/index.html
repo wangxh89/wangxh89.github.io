@@ -1,0 +1,911 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="FlexAutomation,FlexMonkey," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="一、Mixin元数据标签Mixin元数据标签：主要作用是为应用程序初始化工作创建一个静态代码块，该代码块会在Flex程序运行的最初阶段调用，即SystemManager初始化完毕，而Application尚未初始化时调用。执行[Mixin]元标签的类的1public static function init(fbs:IFlexModuleFactory):void
+二、工作流程
+SystemMan">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FlexAutomation与FlexMonkey流程">
+<meta property="og:url" content="http://wangxh89.github.io/flexautomation/index.html">
+<meta property="og:site_name" content="wang.xiaohu's Blog">
+<meta property="og:description" content="一、Mixin元数据标签Mixin元数据标签：主要作用是为应用程序初始化工作创建一个静态代码块，该代码块会在Flex程序运行的最初阶段调用，即SystemManager初始化完毕，而Application尚未初始化时调用。执行[Mixin]元标签的类的1public static function init(fbs:IFlexModuleFactory):void
+二、工作流程
+SystemMan">
+<meta property="og:updated_time" content="2017-03-29T03:03:42.133Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="FlexAutomation与FlexMonkey流程">
+<meta name="twitter:description" content="一、Mixin元数据标签Mixin元数据标签：主要作用是为应用程序初始化工作创建一个静态代码块，该代码块会在Flex程序运行的最初阶段调用，即SystemManager初始化完毕，而Application尚未初始化时调用。执行[Mixin]元标签的类的1public static function init(fbs:IFlexModuleFactory):void
+二、工作流程
+SystemMan">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://wangxh89.github.io/flexautomation/"/>
+
+
+
+
+
+  <title> FlexAutomation与FlexMonkey流程 | wang.xiaohu's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">wang.xiaohu's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">生活、技术个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://wangxh89.github.io/flexautomation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="wang.xiaohu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/wxh.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wang.xiaohu's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                FlexAutomation与FlexMonkey流程
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-01-08T11:02:07+08:00">
+                2014-01-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flex/" itemprop="url" rel="index">
+                    <span itemprop="name">Flex</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/flexautomation/" class="leancloud_visitors" data-flag-title="FlexAutomation与FlexMonkey流程">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-edit"></i>
+                </span>
+                  
+                    <span class="post-meta-item-text">字数统计</span>
+                  
+                    <span title="字数统计" }}">
+                      989 字
+                    </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                  
+                    <span class="post-meta-item-text">阅读时长</span>
+                  
+                    <span title="阅读时长" }}">
+                      5 分钟
+                    </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、Mixin元数据标签"><a href="#一、Mixin元数据标签" class="headerlink" title="一、Mixin元数据标签"></a>一、Mixin元数据标签</h2><p>Mixin元数据标签：主要作用是为应用程序初始化工作创建一个静态代码块，该代码块会在Flex程序运行的最初阶段调用，即SystemManager初始化完毕，而Application尚未初始化时调用。执行[Mixin]元标签的类的<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">init</span>(<span class="params">fbs:IFlexModuleFactory</span>):<span class="title">void</span></span></div></pre></td></tr></table></figure></p>
+<h2 id="二、工作流程"><a href="#二、工作流程" class="headerlink" title="二、工作流程"></a>二、工作流程</h2><ol>
+<li><p>SystemManager初始化完毕后，都会调用所Mixin的Init方法。<br>在所有代理委托类中的都会有一段Mixin的Init方法，用于注册控件对应的代理类</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">[Mixin]</div><div class="line"><span class="comment">/**</span></div><div class="line"> 1.</div><div class="line"> 2.  Defines methods and properties required to perform instrumentation for the</div><div class="line"> 3.  Button control.</div><div class="line"> 4.</div><div class="line"> 5.  @see mx.controls.Button</div><div class="line"> 6.  */</div><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">ButtonAutomationImpl</span> <span class="keyword">extends</span> <span class="title">UIComponentAutomationImpl</span></span></div><div class="line">&#123;</div><div class="line">    include <span class="string">"../../../core/Version.as"</span>;</div><div class="line"></div><div class="line">    <span class="comment">//--------------------------------------------------------------------------</span></div><div class="line">    <span class="comment">//</span></div><div class="line">    <span class="comment">//  Class methods</span></div><div class="line">    <span class="comment">//</span></div><div class="line">    <span class="comment">//--------------------------------------------------------------------------</span></div><div class="line">    <span class="comment">/**</span></div><div class="line">     *  Registers the delegate class for a component class with automation manager.</div><div class="line">     *</div><div class="line">     *  @param root The SystemManger of the application.</div><div class="line">     */</div><div class="line">    public <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">init</span>(<span class="params">root:DisplayObject</span>):<span class="title">void</span></span></div><div class="line">    &#123;</div><div class="line">        Automation.registerDelegateClass(Button, ButtonAutomationImpl);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>SystemManager在加载每一个UIComponent的时候，都会触发Event.ADDED事件。</p>
+</li>
+<li>AutomationManager也是元数据[Mixin]标识的。<br>AutomationManager的init方法中监听了Event.ADDED事件。<br>root.addEventListener(Event.ADDED,childAddedHandler, false, 0, true);<br>在childAddedHandler处理函数中，为每一个可视化控件都创建了一个委托实例，并把控件和委托类进行了关联（根据第一步的结果）。<br>Automation.delegateClassMap[componentClass] = Automation.delegateClassMap[className];<br>AutomationManager中包含重要的recordAutomatableEvent()方法，方法内部主要是创建并触发了AutomationRecordEvent.RECORD事件。当进行录制操作的时候会触发这个事件</li>
+<li>以Button的Click事件举例：</li>
+</ol>
+<ul>
+<li>用户单击了Button钮，SystemManager会触发一个MouseEvent.CLICK事件</li>
+<li>ButtonAutomationImpl是Button控件的自动化委托类，委托类的构造函数中监听了Button钮的CLICK事件。<br>obj.addEventListener(MouseEvent.CLICK, clickHandler, false, EventPriority.DEFAULT+1, true);<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> *  Constructor.</div><div class="line"> * @param obj Button object to be automated.</div><div class="line"> */</div><div class="line">public <span class="function"><span class="keyword">function</span> <span class="title">ButtonAutomationImpl</span>(<span class="params">obj:Button</span>)</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">super</span>(obj);</div><div class="line">    obj.addEventListener(KeyboardEvent.KEY_UP, btnKeyUpHandler, <span class="literal">false</span>, EventPriority.DEFAULT+<span class="number">1</span>, <span class="literal">true</span>);</div><div class="line">    obj.addEventListener(MouseEvent.CLICK, clickHandler, <span class="literal">false</span>, EventPriority.DEFAULT+<span class="number">1</span>, <span class="literal">true</span>);</div><div class="line">&#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"> *  @private</div><div class="line"> *  storage for the owner component</div><div class="line"> */</div><div class="line">protected <span class="function"><span class="keyword">function</span> <span class="title">get</span> <span class="title">btn</span>(<span class="params"></span>):<span class="title">Button</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> uiComponent <span class="keyword">as</span> Button;</div><div class="line">&#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"> *  @private</div><div class="line"> */</div><div class="line">private <span class="keyword">var</span> ignoreReplayableClick:<span class="built_in">Boolean</span>;</div><div class="line"><span class="comment">//----------------------------------</span></div><div class="line"><span class="comment">//  automationName</span></div><div class="line"><span class="comment">//----------------------------------</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> *  @private</div><div class="line"> */</div><div class="line">override public <span class="function"><span class="keyword">function</span> <span class="title">get</span> <span class="title">automationName</span>(<span class="params"></span>):<span class="title">String</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> btn.label || btn.toolTip || <span class="keyword">super</span>.automationName;</div><div class="line">&#125;</div><div class="line"><span class="comment">//----------------------------------</span></div><div class="line"><span class="comment">//  automationValue</span></div><div class="line"><span class="comment">//----------------------------------</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> *  @private</div><div class="line"> */</div><div class="line">override public <span class="function"><span class="keyword">function</span> <span class="title">get</span> <span class="title">automationValue</span>(<span class="params"></span>):<span class="title">Array</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> [ btn.label || btn.toolTip ];</div><div class="line">&#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"> *  @private</div><div class="line"> */</div><div class="line">protected <span class="function"><span class="keyword">function</span> <span class="title">clickHandler</span>(<span class="params">event:MouseEvent</span>):<span class="title">void</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (!ignoreReplayableClick)</div><div class="line">        recordAutomatableEvent(event);</div><div class="line">    ignoreReplayableClick = <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"> *  @private</div><div class="line"> */</div><div class="line">private <span class="function"><span class="keyword">function</span> <span class="title">btnKeyUpHandler</span>(<span class="params">event:KeyboardEvent</span>):<span class="title">void</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (!btn.enabled)</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    <span class="keyword">if</span> (event.keyCode == Keyboard.SPACE)</div><div class="line">    &#123;</div><div class="line">        <span class="comment">// we need to ignore recording a click being dispatched here</span></div><div class="line">        ignoreReplayableClick = <span class="literal">true</span>;</div><div class="line">        recordAutomatableEvent(event);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>CLICK事件的处理函数clickHandler内部，调用了AutomationManager的recordAutomatableEvent方法，该方法又触发了AutomationRecordEvent.RECORD事件。</p>
+<ol>
+<li><p>MonkeyLink的init方法中对FlexMonkey和Flex Application通过LocalConnection进行了关联，并且监听了AutomationRecordEvent.RECORD事件。<br>MonkeyAutomationManager.instance.addEventListener(AutomationRecordEvent.RECORD, recordEventHandler, false, 0, true);</p>
+</li>
+<li><p>MonkeyLink捕获到了AutomationRecordEvent.RECORD事件，记录下了事件信息，并创建了UIEventMonkeyCommand命令。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">     public <span class="function"><span class="keyword">function</span> <span class="title">recordEventHandler</span>(<span class="params">event:AutomationRecordEvent</span>):<span class="title">void</span> </span>&#123;</div><div class="line">         <span class="keyword">var</span> id:<span class="built_in">String</span>;</div><div class="line">         <span class="keyword">var</span> idProp:<span class="built_in">String</span>;</div><div class="line">         <span class="keyword">var</span> obj:IAutomationObject = event.automationObject;</div><div class="line">         <span class="keyword">var</span> container:UIComponent = <span class="literal">null</span>;</div><div class="line">    idProp = <span class="string">"automationID"</span>;</div><div class="line">id=MonkeyAutomationManager.instance.createID(obj).toString();</div><div class="line">         <span class="keyword">var</span> uiEventCommand:UIEventMonkeyCommand = <span class="keyword">new</span> UIEventMonkeyCommand();</div><div class="line">         uiEventCommand.value = id;</div><div class="line">         uiEventCommand.prop = idProp;</div><div class="line">         uiEventCommand.command = event.name;</div><div class="line">         uiEventCommand.args = event.args;</div><div class="line">         <span class="keyword">if</span> (MonkeyAutomationState.monkeyAutomationState.state != MonkeyAutomationState.SNAPSHOT) &#123;</div><div class="line">             FMHub.instance.dispatchEvent(<span class="keyword">new</span> CommandRecordedEvent(uiEventCommand));</div></pre></td></tr></table></figure>
+</li>
+<li><p>FlexMonkium The FlexMonkey/Selenium Bridge<br>中处理UIEventMonkeyCommand命令，生成XML之类似的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">   [Mixin]</div><div class="line">    public <span class="class"><span class="keyword">class</span> <span class="title">FlexMonkium</span> </span>&#123;</div><div class="line">        <span class="comment">// I'm totally static. No need to instance me.</span></div><div class="line">        public <span class="function"><span class="keyword">function</span> <span class="title">FlexMonkium</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        &#125;</div><div class="line">        public <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">init</span>(<span class="params">root:DisplayObject</span>):<span class="title">void</span> </span>&#123;</div><div class="line">            <span class="keyword">var</span> link:MonkeyLink; <span class="comment">// Dummy reference to cause class to load</span></div><div class="line">            root.addEventListener(FlexEvent.APPLICATION_COMPLETE, <span class="function"><span class="keyword">function</span>(<span class="params"></span>):<span class="title">void</span> </span>&#123;</div><div class="line">                <span class="comment">// If we're in MonkeyLink, the external interface will be available. In AirMonkey, it won't be.</span></div><div class="line">                <span class="keyword">if</span> (ExternalInterface.available) &#123;</div><div class="line">                    ExternalInterface.addCallback(<span class="string">"playFromSelenium"</span>, FlexMonkium.playFromSelenium);</div><div class="line">                    ExternalInterface.addCallback(<span class="string">"verifyFromSelenium"</span>, FlexMonkium.verifyFromSelenium);</div><div class="line">                    ExternalInterface.addCallback(<span class="string">"getForSelenium"</span>, FlexMonkium.getForSelenium);</div><div class="line">                    ExternalInterface.addCallback(<span class="string">"getCellForSelenium"</span>, FlexMonkium.getCellForSelenium);</div><div class="line">                    AQAdapter.aqAdapter.beginRecording();</div><div class="line">                    FMHub.instance.listen(CommandRecordedEvent.COMMAND_RECORDED, <span class="function"><span class="keyword">function</span>(<span class="params">ev:CommandRecordedEvent</span>):<span class="title">void</span> </span>&#123;</div><div class="line">                        sendToSelenium(ev.command);</div><div class="line">                    &#125;, <span class="keyword">this</span>);</div><div class="line"><span class="comment">//                    FMHub.instance.listen(VerifyCreatedEvent.VERIFY_CREATED, function(ev:VerifyCreatedEvent):void &#123;</span></div><div class="line"><span class="comment">//                        sendVerifyToSelenium(ev.verify);</span></div><div class="line"><span class="comment">//                    &#125;, this);</span></div><div class="line">                    <span class="keyword">if</span> (ExternalInterface.available)</div><div class="line">                    &#123;</div><div class="line">                        <span class="keyword">var</span> js:<span class="built_in">String</span> = <span class="string">'function() &#123;window["_Selenium_IDE_Recorder"].record("waitForFlexMonkey")&#125;'</span>;</div><div class="line">                        ExternalInterface.call(js);</div><div class="line">                    &#125; <span class="keyword">else</span> &#123;</div><div class="line">                        trace(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"FlexMonkium: Unexpectedly found ExternalInterface to be unavailable"</span>).getStackTrace());</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;, <span class="literal">false</span>, <span class="number">-1</span>); <span class="comment">// Set to -1 priority so that aqadapter can initialize first</span></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">static</span> public <span class="function"><span class="keyword">function</span> <span class="title">sendToSelenium</span>(<span class="params">event:UIEventMonkeyCommand</span>):<span class="title">void</span> </span>&#123;</div><div class="line">            <span class="keyword">if</span> (ExternalInterface.available) &#123;</div><div class="line">                <span class="comment">//trace("FlexMonkium: Send to selenium: " + event.xml.toXMLString());</span></div><div class="line">                <span class="keyword">var</span> js:<span class="built_in">String</span> = <span class="string">'function(xml) &#123;window["_Selenium_IDE_Recorder"].record("flexMonkey",xml)&#125;'</span>;</div><div class="line">                ExternalInterface.call(js, XmlConversionFactory.encode(event, <span class="literal">true</span>).toXMLString());</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                trace(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"FlexMonkium: Unexpectedly found ExternalInterface to be unavailable"</span>).getStackTrace());</div><div class="line">            &#125;</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="三、回放操作"><a href="#三、回放操作" class="headerlink" title="三、回放操作"></a>三、回放操作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> *  @private</div><div class="line"> *  Replays click interactions on the button.</div><div class="line"> *  If the interaction was from the mouse,</div><div class="line"> *  dispatches MOUSE_DOWN, MOUSE_UP, and CLICK.</div><div class="line"> *  If interaction was from the keyboard,</div><div class="line"> *  dispatches KEY_DOWN, KEY_UP.</div><div class="line"> *  Button&apos;s KEY_UP handler then dispatches CLICK.</div><div class="line"> *</div><div class="line"> *  @param event ReplayableClickEvent to replay.</div><div class="line"> */</div><div class="line">override public function replayAutomatableEvent(event:Event):Boolean</div><div class="line">&#123;</div><div class="line">    var help:IAutomationObjectHelper = Automation.automationObjectHelper;</div><div class="line"></div><div class="line">    if (event is MouseEvent &amp;&amp; event.type == MouseEvent.CLICK)</div><div class="line">        return help.replayClick(uiComponent, MouseEvent(event));</div><div class="line">    else if (event is KeyboardEvent)</div><div class="line">        return help.replayKeyboardEvent(uiComponent, KeyboardEvent(event));</div><div class="line">    else</div><div class="line">        return super.replayAutomatableEvent(event);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/FlexAutomation/" rel="tag"># FlexAutomation</a>
+          
+            <a href="/tags/FlexMonkey/" rel="tag"># FlexMonkey</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/hexo-install-config/" rel="next" title="hexo安装配置">
+                <i class="fa fa-chevron-left"></i> hexo安装配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/flexinterview/" rel="prev" title="FLEX 面试题总结">
+                FLEX 面试题总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/wxh.jpg"
+               alt="wang.xiaohu" />
+          <p class="site-author-name" itemprop="name">wang.xiaohu</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wangxh89" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Mixin元数据标签"><span class="nav-number">1.</span> <span class="nav-text">一、Mixin元数据标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、工作流程"><span class="nav-number">2.</span> <span class="nav-text">二、工作流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、回放操作"><span class="nav-number">3.</span> <span class="nav-text">三、回放操作</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-tint"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wang.xiaohu</span>
+</div>
+
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i> 访问用户：<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人</span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i> 访问次数：<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.1/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.1/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n5VCYRL0j4MHTB1MgIMq9bR5-gzGzoHsz", "6mpkU1dhSWoLYM7PEd05eiMA");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

@@ -1,0 +1,893 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="linux,centos," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="准备知识LVM是逻辑盘卷管理（Logical Volume Manager）的简称他是磁盘管理的另一种工具，就目前基本上所有操作系统均支持，LVM是建立在硬盘和分区之上的一个逻辑层，来提高磁盘分区管理的灵活性。通过LVM系统管理员可以轻松管理磁盘分区，如：将若干个磁盘分区连接为一个整块的卷组（volume group），形成一个存储池。管理员可以在卷组上随意创建逻辑卷组（logical volum">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记CentOS 6.5 下根目录报空间不足 处理">
+<meta property="og:url" content="http://wangxh89.github.io/CentOS-notEnough/index.html">
+<meta property="og:site_name" content="wang.xiaohu's Blog">
+<meta property="og:description" content="准备知识LVM是逻辑盘卷管理（Logical Volume Manager）的简称他是磁盘管理的另一种工具，就目前基本上所有操作系统均支持，LVM是建立在硬盘和分区之上的一个逻辑层，来提高磁盘分区管理的灵活性。通过LVM系统管理员可以轻松管理磁盘分区，如：将若干个磁盘分区连接为一个整块的卷组（volume group），形成一个存储池。管理员可以在卷组上随意创建逻辑卷组（logical volum">
+<meta property="og:updated_time" content="2017-03-31T07:32:20.979Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记CentOS 6.5 下根目录报空间不足 处理">
+<meta name="twitter:description" content="准备知识LVM是逻辑盘卷管理（Logical Volume Manager）的简称他是磁盘管理的另一种工具，就目前基本上所有操作系统均支持，LVM是建立在硬盘和分区之上的一个逻辑层，来提高磁盘分区管理的灵活性。通过LVM系统管理员可以轻松管理磁盘分区，如：将若干个磁盘分区连接为一个整块的卷组（volume group），形成一个存储池。管理员可以在卷组上随意创建逻辑卷组（logical volum">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://wangxh89.github.io/CentOS-notEnough/"/>
+
+
+
+
+
+  <title> 记CentOS 6.5 下根目录报空间不足 处理 | wang.xiaohu's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">wang.xiaohu's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">生活、技术个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://wangxh89.github.io/CentOS-notEnough/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="wang.xiaohu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/wxh.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wang.xiaohu's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                记CentOS 6.5 下根目录报空间不足 处理
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-12-30T15:04:37+08:00">
+                2014-12-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/CentOS-notEnough/" class="leancloud_visitors" data-flag-title="记CentOS 6.5 下根目录报空间不足 处理">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-edit"></i>
+                </span>
+                  
+                    <span class="post-meta-item-text">字数统计</span>
+                  
+                    <span title="字数统计" }}">
+                      1,424 字
+                    </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                  
+                    <span class="post-meta-item-text">阅读时长</span>
+                  
+                    <span title="阅读时长" }}">
+                      7 分钟
+                    </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="准备知识"><a href="#准备知识" class="headerlink" title="准备知识"></a>准备知识</h3><h4 id="LVM是逻辑盘卷管理（Logical-Volume-Manager）的简称"><a href="#LVM是逻辑盘卷管理（Logical-Volume-Manager）的简称" class="headerlink" title="LVM是逻辑盘卷管理（Logical Volume Manager）的简称"></a>LVM是逻辑盘卷管理（Logical Volume Manager）的简称</h4><p>他是磁盘管理的另一种工具，就目前基本上所有操作系统均支持，LVM是建立在硬盘和分区之上的一个逻辑层，来提高磁盘分区管理的灵活性。通过LVM系统管理员可以轻松管理磁盘分区，如：将若干个磁盘分区连接为一个整块的卷组（volume group），形成一个存储池。管理员可以在卷组上随意创建逻辑卷组（logical volumes），并进一步在逻辑卷组上创建文件系统。管理员通过LVM可以方便的调整存储卷组的大小，并且可以对磁盘存储按照组的方式进行命名、管理和分配</p>
+<h4 id="物理存储介质（The-physical-media）"><a href="#物理存储介质（The-physical-media）" class="headerlink" title="物理存储介质（The physical media）"></a>物理存储介质（The physical media）</h4><p>这里指系统的存储设备：硬盘，如：/dev/hda、/dev/sda等等，是存储系统最低层的存储单元。</p>
+<h4 id="物理卷（physicalvolume）"><a href="#物理卷（physicalvolume）" class="headerlink" title="物理卷（physicalvolume）"></a>物理卷（physicalvolume）</h4><p>物理卷就是指硬盘分区或从逻辑上与磁盘分区具有同样功能的设备(如RAID)，是LVM的基本存储逻辑块，但和基本的物理存储介质（如分区、磁盘等）比较，却包含有与LVM相关的管理参数。</p>
+<h4 id="卷组（Volume-Group）"><a href="#卷组（Volume-Group）" class="headerlink" title="卷组（Volume Group）"></a>卷组（Volume Group）</h4><p>LVM卷组类似于非LVM系统中的物理硬盘，其由物理卷组成。可以在卷组上创建一个或多个“LVM分区”（逻辑卷），LVM卷组由一个或多个物理卷组成。</p>
+<h4 id="逻辑卷（logicalvolume）"><a href="#逻辑卷（logicalvolume）" class="headerlink" title="逻辑卷（logicalvolume）"></a>逻辑卷（logicalvolume）</h4><p>LVM的逻辑卷类似于非LVM系统中的硬盘分区，在逻辑卷之上可以建立文件系统(比如/home或者/usr等)。</p>
+<h4 id="PE（physical-extent）"><a href="#PE（physical-extent）" class="headerlink" title="PE（physical extent）"></a>PE（physical extent）</h4><p>每一个物理卷被划分为称为PE(Physical Extents)的基本单元，具有唯一编号的PE是可以被LVM寻址的最小单元。PE的大小是可配置的，默认为4MB。</p>
+<h4 id="LE（logical-extent）"><a href="#LE（logical-extent）" class="headerlink" title="LE（logical extent）"></a>LE（logical extent）</h4><p>逻辑卷也被划分为被称为LE(Logical Extents) 的可被寻址的基本单位。在同一个卷组中，LE的大小和PE是相同的，并且一一对应。</p>
+<h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@3.5.5Biz-46 ~]# lsb_release -a</div><div class="line">LSB Version:    :base-4.0-amd64:base-4.0-noarch:core-4.0-amd64:core-4.0-noarch:graphics-4.0-amd64:graphics-4.0-noarch:printing-4.0-amd64:printing-4.0-noarch</div><div class="line">Distributor ID:    CentOS</div><div class="line">Description:    CentOS release 6.5 (Final)</div><div class="line">Release:    6.5</div><div class="line">Codename:    Final</div></pre></td></tr></table></figure>
+<h3 id="查看系统目录的挂载情况"><a href="#查看系统目录的挂载情况" class="headerlink" title="查看系统目录的挂载情况"></a>查看系统目录的挂载情况</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[root@vm ~]# df -k</div><div class="line">Filesystem                 1K-blocks     Used Available Use% Mounted on</div><div class="line">/dev/mapper/vg00-lvroot      2064208  2047816         0 100% /</div><div class="line">tmpfs                        4031404      144   4031260   1% /dev/shm</div><div class="line">/dev/sda1                    1032088    63476    916184   7% /boot</div><div class="line">/dev/mapper/vg00-lvhome      4128448   139256   3779480   4% /home</div><div class="line">/dev/mapper/vg00-lvopt       8256952   321380   7516144   5% /opt</div><div class="line">/dev/mapper/vg00-lvtmp       8256952   149900   7687624   2% /tmp</div><div class="line">/dev/mapper/vg00-lvusr      10321208  3278988   6517932  34% /usr</div><div class="line">/dev/mapper/vg00-lvvar       8256952   355328   7482196   5% /var</div><div class="line">/dev/mapper/vg00-lvztesoft 206424760 13963380 181975620   8% /ztesoft</div><div class="line">/dev/sr0                     4363088  4363088         0 100% /media/CentOS_6.5_Final</div><div class="line">gvfs-fuse-daemon             2064208  2047816         0 100% /root/.gvfs</div></pre></td></tr></table></figure>
+<h3 id="确认home目录下没有数据后，将home目录卸载"><a href="#确认home目录下没有数据后，将home目录卸载" class="headerlink" title="确认home目录下没有数据后，将home目录卸载"></a>确认home目录下没有数据后，将home目录卸载</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[root@vm /]# umount /home</div><div class="line">[root@vm /]# df -h</div><div class="line">Filesystem                  Size  Used Avail Use% Mounted on</div><div class="line">/dev/mapper/vg00-lvroot     2.0G  2.0G     0 100% /</div><div class="line">tmpfs                       3.9G  144K  3.9G   1% /dev/shm</div><div class="line">/dev/sda1                  1008M   62M  895M   7% /boot</div><div class="line">/dev/mapper/vg00-lvopt      7.9G  314M  7.2G   5% /opt</div><div class="line">/dev/mapper/vg00-lvtmp      7.9G  147M  7.4G   2% /tmp</div><div class="line">/dev/mapper/vg00-lvusr      9.9G  3.2G  6.3G  34% /usr</div><div class="line">/dev/mapper/vg00-lvvar      7.9G  347M  7.2G   5% /var</div><div class="line">/dev/mapper/vg00-lvztesoft  197G   14G  174G   8% /ztesoft</div><div class="line">/dev/sr0                    4.2G  4.2G     0 100% /media/CentOS_6.5_Final</div><div class="line">gvfs-fuse-daemon            2.0G  2.0G     0 100% /root/.gvfs</div></pre></td></tr></table></figure>
+<h3 id="删除lv-home"><a href="#删除lv-home" class="headerlink" title="删除lv_home"></a>删除lv_home</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@vm /]# lvremove /dev/mapper/vg00-lvhome</div><div class="line">Do you really want to remove active logical volume lvhome? [y/n]: y</div></pre></td></tr></table></figure>
+<h3 id="将所有空闲空间增加给逻辑卷lv-root"><a href="#将所有空闲空间增加给逻辑卷lv-root" class="headerlink" title="将所有空闲空间增加给逻辑卷lv_root"></a>将所有空闲空间增加给逻辑卷lv_root</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@vm VirtualBox]# lvextend -L +4G /dev/mapper/vg00-lvroot</div><div class="line">  Extending logical volume lvroot to 6.00 GiB</div><div class="line">  /etc/lvm/backup/vg00.tmp: write error failed: No space left on device</div><div class="line">  Backup of volume group vg00 metadata failed.</div><div class="line">  Logical volume lvroot successfully resized</div><div class="line">此时查看文件系统的根目录空间并没有发生变化</div></pre></td></tr></table></figure>
+<h3 id="调整文件系统空间"><a href="#调整文件系统空间" class="headerlink" title="调整文件系统空间"></a>调整文件系统空间</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@vm VirtualBox]# resize2fs -p /dev/mapper/vg00-lvroot</div><div class="line">resize2fs 1.41.12 (17-May-2010)</div><div class="line">Filesystem at /dev/mapper/vg00-lvroot is mounted on /; on-line resizing required</div><div class="line">old desc_blocks = 1, new_desc_blocks = 1</div><div class="line">Performing an on-line resize of /dev/mapper/vg00-lvroot to 1572864 (4k) blocks.</div><div class="line">The filesystem on /dev/mapper/vg00-lvroot is now 1572864 blocks long.</div></pre></td></tr></table></figure>
+<h3 id="修改操作系统挂载目录的配置文件-etc-fstab，注释掉home挂载"><a href="#修改操作系统挂载目录的配置文件-etc-fstab，注释掉home挂载" class="headerlink" title="修改操作系统挂载目录的配置文件/etc/fstab，注释掉home挂载"></a>修改操作系统挂载目录的配置文件/etc/fstab，注释掉home挂载</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">[root@vm VirtualBox]# more /etc/fstab</div><div class="line"></div><div class="line">#</div><div class="line"># /etc/fstab</div><div class="line"># Created by anaconda on Fri Dec  5 02:40:08 2014</div><div class="line">#</div><div class="line"># Accessible filesystems, by reference, are maintained under &apos;/dev/disk&apos;</div><div class="line"># See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info</div><div class="line">#</div><div class="line">/dev/mapper/vg00-lvroot /                       ext4    defaults        1 1</div><div class="line">UUID=307dc23f-1bbc-4c1d-ac15-a26ecf9f5fe3 /boot                   ext4    defaults        1 2</div><div class="line">#/dev/mapper/vg00-lvhome /home                   ext4    defaults        1 2</div><div class="line">/dev/mapper/vg00-lvopt  /opt                    ext4    defaults        1 2</div><div class="line">/dev/mapper/vg00-lvtmp  /tmp                    ext4    defaults        1 2</div><div class="line">/dev/mapper/vg00-lvusr  /usr                    ext4    defaults        1 2</div><div class="line">/dev/mapper/vg00-lvvar  /var                    ext4    defaults        1 2</div><div class="line">/dev/mapper/vg00-lvswap swap                    swap    defaults        0 0</div><div class="line">tmpfs                   /dev/shm                tmpfs   defaults        0 0</div><div class="line">devpts                  /dev/pts                devpts  gid=5,mode=620  0 0</div><div class="line">sysfs                   /sys                    sysfs   defaults        0 0</div><div class="line">proc                    /proc                   proc    defaults        0 0</div><div class="line">/dev/mapper/vg00-lvztesoft /ztesoft ext4 rw 0 0</div></pre></td></tr></table></figure>
+<h3 id="有空间VG-扩充的方法"><a href="#有空间VG-扩充的方法" class="headerlink" title="有空间VG 扩充的方法"></a>有空间VG 扩充的方法</h3><p>以上方法对于没有空闲VG ，如果有空闲VG直接操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">[root@vm home]# vgs</div><div class="line">VG #PV #LV #SN Attr VSize VFree</div><div class="line">vg00 1 7 0 wz—n- 298.97g 250.97g</div><div class="line">root@vm home]# df -h</div><div class="line">Filesystem            Size  Used Avail Use% Mounted on</div><div class="line">/dev/mapper/vg00-lvroot</div><div class="line">                       99G  1.7G   92G   2% /</div><div class="line">tmpfs                 7.8G   68K  7.8G   1% /dev/shm</div><div class="line">/dev/sda1            1008M   88M  870M  10% /boot</div><div class="line">/dev/mapper/vg00-lvhome</div><div class="line">                      4.0G  136M  3.7G   4% /home</div><div class="line">/dev/mapper/vg00-lvopt</div><div class="line">                      7.9G  146M  7.4G   2% /opt</div><div class="line">/dev/mapper/vg00-lvtmp</div><div class="line">                      7.9G  147M  7.4G   2% /tmp</div><div class="line">/dev/mapper/vg00-lvusr</div><div class="line">                      9.9G  9.4G     0 100% /usr</div><div class="line"></div><div class="line">----我直接使用的根目录，所以扩根分区</div><div class="line"> [root@vm ~]# lvextend -L 10240M /dev/vg00/lvroot</div><div class="line">  Size of logical volume vg00/lvroot changed from 2.00 GiB (64 extents) to 10.00 GiB (320 extents).</div><div class="line">  Logical volume lvroot successfully resized</div><div class="line">[root@vm ~]# lvextend -L 102400M /dev/vg00/lvroot</div><div class="line">  Size of logical volume vg00/lvroot changed from 10.00 GiB (320 extents) to 100.00 GiB (3200 extents).</div><div class="line">  Logical volume lvroot successfully resized</div><div class="line"></div><div class="line">----扩展到文件系统</div><div class="line">[root@vm ~]# resize2fs /dev/vg00/lvroot</div><div class="line">resize2fs 1.41.12 (17-May-2010)</div><div class="line">Filesystem at /dev/vg00/lvroot is mounted on /; on-line resizing required</div><div class="line">old desc_blocks = 1, new_desc_blocks = 7</div><div class="line">Performing an on-line resize of /dev/vg00/lvroot to 26214400 (4k) blocks.</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/centos/" rel="tag"># centos</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/badiuMap-psmp/" rel="next" title="百度地图Android sdk 在PSMP中的应用">
+                <i class="fa fa-chevron-left"></i> 百度地图Android sdk 在PSMP中的应用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/CentOS-VirtualBox-install/" rel="prev" title="记在CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程">
+                记在CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/wxh.jpg"
+               alt="wang.xiaohu" />
+          <p class="site-author-name" itemprop="name">wang.xiaohu</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wangxh89" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备知识"><span class="nav-number">1.</span> <span class="nav-text">准备知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LVM是逻辑盘卷管理（Logical-Volume-Manager）的简称"><span class="nav-number">1.1.</span> <span class="nav-text">LVM是逻辑盘卷管理（Logical Volume Manager）的简称</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#物理存储介质（The-physical-media）"><span class="nav-number">1.2.</span> <span class="nav-text">物理存储介质（The physical media）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#物理卷（physicalvolume）"><span class="nav-number">1.3.</span> <span class="nav-text">物理卷（physicalvolume）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#卷组（Volume-Group）"><span class="nav-number">1.4.</span> <span class="nav-text">卷组（Volume Group）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#逻辑卷（logicalvolume）"><span class="nav-number">1.5.</span> <span class="nav-text">逻辑卷（logicalvolume）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PE（physical-extent）"><span class="nav-number">1.6.</span> <span class="nav-text">PE（physical extent）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LE（logical-extent）"><span class="nav-number">1.7.</span> <span class="nav-text">LE（logical extent）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境"><span class="nav-number">2.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看系统目录的挂载情况"><span class="nav-number">3.</span> <span class="nav-text">查看系统目录的挂载情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#确认home目录下没有数据后，将home目录卸载"><span class="nav-number">4.</span> <span class="nav-text">确认home目录下没有数据后，将home目录卸载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除lv-home"><span class="nav-number">5.</span> <span class="nav-text">删除lv_home</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将所有空闲空间增加给逻辑卷lv-root"><span class="nav-number">6.</span> <span class="nav-text">将所有空闲空间增加给逻辑卷lv_root</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调整文件系统空间"><span class="nav-number">7.</span> <span class="nav-text">调整文件系统空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改操作系统挂载目录的配置文件-etc-fstab，注释掉home挂载"><span class="nav-number">8.</span> <span class="nav-text">修改操作系统挂载目录的配置文件/etc/fstab，注释掉home挂载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有空间VG-扩充的方法"><span class="nav-number">9.</span> <span class="nav-text">有空间VG 扩充的方法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-tint"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wang.xiaohu</span>
+</div>
+
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i> 访问用户：<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人</span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i> 访问次数：<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.1/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.1/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n5VCYRL0j4MHTB1MgIMq9bR5-gzGzoHsz", "6mpkU1dhSWoLYM7PEd05eiMA");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

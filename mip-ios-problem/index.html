@@ -1,0 +1,882 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ios," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="storyboard中使用 TTTattibutedLabel 及didSelectLinkWithURL没有调用问题storyboard中使用 TTTattibutedLabelGo to Storyboard and select the UILabel and change its class to TTTAttributedLabe关联代码1@property (weak, nonatom">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记 开发MIP IOS版本中遇到的坑">
+<meta property="og:url" content="http://wangxh89.github.io/mip-ios-problem/index.html">
+<meta property="og:site_name" content="wang.xiaohu's Blog">
+<meta property="og:description" content="storyboard中使用 TTTattibutedLabel 及didSelectLinkWithURL没有调用问题storyboard中使用 TTTattibutedLabelGo to Storyboard and select the UILabel and change its class to TTTAttributedLabe关联代码1@property (weak, nonatom">
+<meta property="og:updated_time" content="2017-03-31T08:09:22.711Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记 开发MIP IOS版本中遇到的坑">
+<meta name="twitter:description" content="storyboard中使用 TTTattibutedLabel 及didSelectLinkWithURL没有调用问题storyboard中使用 TTTattibutedLabelGo to Storyboard and select the UILabel and change its class to TTTAttributedLabe关联代码1@property (weak, nonatom">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://wangxh89.github.io/mip-ios-problem/"/>
+
+
+
+
+
+  <title> 记 开发MIP IOS版本中遇到的坑 | wang.xiaohu's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">wang.xiaohu's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">生活、技术个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://wangxh89.github.io/mip-ios-problem/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="wang.xiaohu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/wxh.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wang.xiaohu's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                记 开发MIP IOS版本中遇到的坑
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-03-15T16:07:57+08:00">
+                2015-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ios/" itemprop="url" rel="index">
+                    <span itemprop="name">ios</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/mip-ios-problem/" class="leancloud_visitors" data-flag-title="记 开发MIP IOS版本中遇到的坑">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-edit"></i>
+                </span>
+                  
+                    <span class="post-meta-item-text">字数统计</span>
+                  
+                    <span title="字数统计" }}">
+                      622 字
+                    </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                  
+                    <span class="post-meta-item-text">阅读时长</span>
+                  
+                    <span title="阅读时长" }}">
+                      3 分钟
+                    </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="storyboard中使用-TTTattibutedLabel-及didSelectLinkWithURL没有调用问题"><a href="#storyboard中使用-TTTattibutedLabel-及didSelectLinkWithURL没有调用问题" class="headerlink" title="storyboard中使用 TTTattibutedLabel 及didSelectLinkWithURL没有调用问题"></a>storyboard中使用 TTTattibutedLabel 及didSelectLinkWithURL没有调用问题</h2><h3 id="storyboard中使用-TTTattibutedLabel"><a href="#storyboard中使用-TTTattibutedLabel" class="headerlink" title="storyboard中使用 TTTattibutedLabel"></a>storyboard中使用 TTTattibutedLabel</h3><p>Go to Storyboard and select the UILabel and change its class to TTTAttributedLabe<br>关联代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">@property (weak, nonatomic) IBOutlet TTTAttributedLabel *tips;</div></pre></td></tr></table></figure></p>
+<p>增加链接<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">   self.tips.enabledTextCheckingTypes = NSTextCheckingTypeLink;</div><div class="line">  self.tips.delegate = self;</div><div class="line">  self.tips.font = [UIFont systemFontOfSize:<span class="number">12</span>];</div><div class="line"></div><div class="line">  [self.tips setText:_(@<span class="string">"注册即视为同意《服务协议》"</span>)]; <span class="comment">// 注册即视为同意《服务协议》</span></div><div class="line">  NSRange range = [self.tips.text rangeOfString:@<span class="string">"服务协议"</span>];</div><div class="line">  [self.tips addLinkToURL:[NSURL URLWithString:@<span class="string">"http://10.45.4.30:8080/mip/m/userLincese"</span>] withRange:range];</div><div class="line">处理回调</div><div class="line">  <span class="meta">#<span class="meta-keyword">pragma</span> mark - TTTAttributedLabelDelegate</span></div><div class="line"></div><div class="line">  - (<span class="keyword">void</span>)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url</div><div class="line">  &#123;</div><div class="line">      [[[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:self cancelButtonTitle:_(@<span class="string">"CANCEL"</span>) destructiveButtonTitle:nil otherButtonTitles:_(@<span class="string">"OPEN_LINK"</span>), nil] showInView:self.view];</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">#<span class="meta-keyword">pragma</span> mark - UIActionSheetDelegate</span></div><div class="line"></div><div class="line">  - (<span class="keyword">void</span>)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex &#123;</div><div class="line">      <span class="keyword">if</span> (buttonIndex == actionSheet.cancelButtonIndex) &#123;</div><div class="line">          <span class="keyword">return</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      [[UIApplication sharedApplication] openURL:[NSURL URLWithString:actionSheet.title]];</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<h3 id="didSelectLinkWithURL没有调用问题"><a href="#didSelectLinkWithURL没有调用问题" class="headerlink" title="didSelectLinkWithURL没有调用问题"></a>didSelectLinkWithURL没有调用问题</h3><h4 id="第一次处理"><a href="#第一次处理" class="headerlink" title="第一次处理"></a>第一次处理</h4><p>参考连接<a href="http://stackoverflow.com/questions/17796512/ios-tttattributedlabel-delegate-didselectlinkwithurl-not-getting-called" target="_blank" rel="external">http://stackoverflow.com/questions/17796512/ios-tttattributedlabel-delegate-didselectlinkwithurl-not-getting-called</a><br>把 “User Interaction Enabled” 给打钩 ，并在代码中设置<br><code>label.userInteractionEnabled = YES;</code><br>没有效果</p>
+<h3 id="第二次处理"><a href="#第二次处理" class="headerlink" title="第二次处理"></a>第二次处理</h3><p>发现我在代码中侦听了整个视图的Tap事件<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">(<span class="keyword">void</span>)addTap</div><div class="line">&#123;</div><div class="line">UITapGestureRecognizer * tapGestuer =</div><div class="line">[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hiddenKeyboard:)];</div><div class="line">tapGestuer.numberOfTapsRequired = <span class="number">1</span>;</div><div class="line">tapGestuer.delegate = self;</div><div class="line">[self.view addGestureRecognizer:tapGestuer];</div><div class="line">&#125;</div><div class="line">-(<span class="keyword">void</span>)hiddenKeyboard:(UITapGestureRecognizer*)gesture</div><div class="line">&#123;</div><div class="line">[self.view endEditing:YES];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>UITapGestureRecognizer会隐藏了一切能响应用户Tap的控件<br>应当是这个问题，导致TTTattibutedLabel 侦听不到事件，所以无法在回调中使用.<br>还好UITapGestureRecognizer有过滤功能，它能够让你选择哪些控件需要响应UITapGestureRecognizer哪些不需要<br>处理措施如下：<br>实现UIGestureRecognizerDelegate委托的如下方法，YES是需要响应，NO为不需要响应<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//如果输入框都没有获取焦点，也就是没有弹出键盘，则都不需要响应</div><div class="line"></div><div class="line">#pragma mark -</div><div class="line">- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch</div><div class="line">&#123;</div><div class="line">    if (![self.userNameTextField isFirstResponder] &amp;&amp; ![self.userPassTextField isFirstResponder] &amp;&amp; ![self.verifyCodeTextField isFirstResponder]) &#123;</div><div class="line">        return NO;</div><div class="line">    &#125;</div><div class="line">    return YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="使用AFNetworking加载图片问题"><a href="#使用AFNetworking加载图片问题" class="headerlink" title="使用AFNetworking加载图片问题"></a>使用AFNetworking加载图片问题</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">NSURL *URL = [NSURL URLWithString:@&quot;http://10.45.4.30:8080/mip/m/getImageFile?id=xxxxxxx&quot;];</div><div class="line">[imageView setImageWithURL:URL];</div></pre></td></tr></table></figure>
+<p>上面的代码显示不出来图片的，查了很久，试了各种方法</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p><a href="http://10.45.4.30:8080/mip/m/getImageFile?id=xxxxxxx这种形式后台返回的图片的二进制流。而setImageWithURL" target="_blank" rel="external">http://10.45.4.30:8080/mip/m/getImageFile?id=xxxxxxx这种形式后台返回的图片的二进制流。而setImageWithURL</a> 需要[request addValue:@”image/“ forHTTPHeaderField:@”Accept”]; 也就是说只接收image/的头，，而在JAVA后台代码中只返回的图片的二进制流</p>
+<h3 id="处理"><a href="#处理" class="headerlink" title="处理"></a>处理</h3><p>使用 – setImageWithURLRequest:placeholderImage:success:failure:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">NSURL * imageUrl = [NSURL URLWithString:[NSString stringWithFormat:@<span class="string">"%@?id=%@"</span>,kUrlGetImageFile,introPic]];</div><div class="line">NSURLRequest * request = [[NSURLRequest alloc] initWithURL:imageUrl];</div><div class="line"></div><div class="line">[cell.image setImageWithURLRequest:request placeholderImage:_defaultImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) &#123;</div><div class="line">    cell.image.image = image;</div><div class="line">&#125; failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) &#123;</div><div class="line">    LogOut(<span class="string">"%@显示图片出错,错误信息:%@"</span>,imageUrl,error);</div><div class="line">&#125;];</div></pre></td></tr></table></figure></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://zhangbuhuai.com/2014/08/03/AFNetworking-20-Tutorial/" target="_blank" rel="external">http://zhangbuhuai.com/2014/08/03/AFNetworking-20-Tutorial/</a><br><a href="http://blog.shiqichan.com/using-afnetworking-sdwebimage-and-ohhttpstubs" target="_blank" rel="external">http://blog.shiqichan.com/using-afnetworking-sdwebimage-and-ohhttpstubs</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ios/" rel="tag"># ios</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/selenium-run-problem/" rel="next" title="记Selenium WebDriver在IE chorme firefox浏览器运行">
+                <i class="fa fa-chevron-left"></i> 记Selenium WebDriver在IE chorme firefox浏览器运行
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/wxh.jpg"
+               alt="wang.xiaohu" />
+          <p class="site-author-name" itemprop="name">wang.xiaohu</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wangxh89" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#storyboard中使用-TTTattibutedLabel-及didSelectLinkWithURL没有调用问题"><span class="nav-number">1.</span> <span class="nav-text">storyboard中使用 TTTattibutedLabel 及didSelectLinkWithURL没有调用问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#storyboard中使用-TTTattibutedLabel"><span class="nav-number">1.1.</span> <span class="nav-text">storyboard中使用 TTTattibutedLabel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#didSelectLinkWithURL没有调用问题"><span class="nav-number">1.2.</span> <span class="nav-text">didSelectLinkWithURL没有调用问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一次处理"><span class="nav-number">1.2.1.</span> <span class="nav-text">第一次处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二次处理"><span class="nav-number">1.3.</span> <span class="nav-text">第二次处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用AFNetworking加载图片问题"><span class="nav-number">2.</span> <span class="nav-text">使用AFNetworking加载图片问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">2.1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原因"><span class="nav-number">2.2.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理"><span class="nav-number">2.3.</span> <span class="nav-text">处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">2.4.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-tint"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wang.xiaohu</span>
+</div>
+
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i> 访问用户：<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人</span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i> 访问次数：<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.1/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.1/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n5VCYRL0j4MHTB1MgIMq9bR5-gzGzoHsz", "6mpkU1dhSWoLYM7PEd05eiMA");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

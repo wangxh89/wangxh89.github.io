@@ -1,0 +1,897 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="test,selenium," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="InternetExplorer12WebDriver driver = new InternetExplorerDriver();driver.get(&amp;quot;http://www.baidu.com&amp;quot;);
+直接运行会报错，的错处理如下：需要设置IE的Driver到“webdriver.ie.driver”变量中，否则可能遇到报错信息：1The path to the driver">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记Selenium WebDriver在IE chorme firefox浏览器运行">
+<meta property="og:url" content="http://wangxh89.github.io/selenium-run-problem/index.html">
+<meta property="og:site_name" content="wang.xiaohu's Blog">
+<meta property="og:description" content="InternetExplorer12WebDriver driver = new InternetExplorerDriver();driver.get(&amp;quot;http://www.baidu.com&amp;quot;);
+直接运行会报错，的错处理如下：需要设置IE的Driver到“webdriver.ie.driver”变量中，否则可能遇到报错信息：1The path to the driver">
+<meta property="og:updated_time" content="2017-03-31T07:42:10.847Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记Selenium WebDriver在IE chorme firefox浏览器运行">
+<meta name="twitter:description" content="InternetExplorer12WebDriver driver = new InternetExplorerDriver();driver.get(&amp;quot;http://www.baidu.com&amp;quot;);
+直接运行会报错，的错处理如下：需要设置IE的Driver到“webdriver.ie.driver”变量中，否则可能遇到报错信息：1The path to the driver">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://wangxh89.github.io/selenium-run-problem/"/>
+
+
+
+
+
+  <title> 记Selenium WebDriver在IE chorme firefox浏览器运行 | wang.xiaohu's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">wang.xiaohu's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">生活、技术个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://wangxh89.github.io/selenium-run-problem/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="wang.xiaohu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/wxh.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wang.xiaohu's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                记Selenium WebDriver在IE chorme firefox浏览器运行
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-04T15:35:07+08:00">
+                2015-01-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/test/" itemprop="url" rel="index">
+                    <span itemprop="name">test</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/selenium-run-problem/" class="leancloud_visitors" data-flag-title="记Selenium WebDriver在IE chorme firefox浏览器运行">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-edit"></i>
+                </span>
+                  
+                    <span class="post-meta-item-text">字数统计</span>
+                  
+                    <span title="字数统计" }}">
+                      906 字
+                    </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                  
+                    <span class="post-meta-item-text">阅读时长</span>
+                  
+                    <span title="阅读时长" }}">
+                      5 分钟
+                    </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="InternetExplorer"><a href="#InternetExplorer" class="headerlink" title="InternetExplorer"></a>InternetExplorer</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">WebDriver driver = new InternetExplorerDriver();</div><div class="line">driver.get(&quot;http://www.baidu.com&quot;);</div></pre></td></tr></table></figure>
+<p>直接运行会报错，的错处理如下：<br>需要设置IE的Driver到“webdriver.ie.driver”变量中，否则可能遇到报错信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">The path to the driver executable must be set by the webdriver.ie.driver system property; for more information, see http://code.google.com/p/selenium/wiki/InternetExplorerDriver. The latest version can be downloaded from http://code.google.com/p/selenium/downloads/list</div></pre></td></tr></table></figure></p>
+<p>因为在IE中测试需要IEDriverServer.ext的支持，从官网下载，区分64位和32分，将这个路径赋值给webdriver.ie.driver<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">System.setProperty(&quot;webdriver.ie.driver&quot;, &quot;D:\\web\\test\\selenium\\IEDriverServer_x64_2.44.0\\IEDriverServer.exe&quot;);</div></pre></td></tr></table></figure></p>
+<p>如果IE浏览器设置安全性较高，在“Internet Options”中都不要选择“Enable Protected Mode”（保护模式），否则可能遇到如下的错误提示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">Started InternetExplorerDriver server (64-bit)</div><div class="line">2.25.2.0</div><div class="line">Listening on port 40961</div><div class="line">Exception in thread &quot;main&quot; org.openqa.selenium.WebDriverException: Unexpected error launching Internet Explorer. Protected Mode settings are not the same for all zones. Enable Protected Mode must be set to the same value (enabled or disabled) for all zones. (WARNING: The server did not provide any stacktrace information)</div><div class="line">Command duration or timeout: 1.18 seconds</div><div class="line">Build info: version: &apos;2.25.0&apos;, revision: &apos;17482&apos;, time: &apos;2012-07-18 22:18:01&apos;</div><div class="line">System info: os.name: &apos;Windows 7&apos;, os.arch: &apos;x86&apos;, os.version: &apos;6.1&apos;, java.version: &apos;1.6.0_29&apos;</div><div class="line">Driver info: driver.version: InternetExplorerDriver</div><div class="line">Session ID: 01e30b64-e403-440c-bed8-4859ef2128f9</div><div class="line">    at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)</div><div class="line">    at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)</div><div class="line">    at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)</div><div class="line">    at java.lang.reflect.Constructor.newInstance(Unknown Source)</div><div class="line">    at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:188)</div><div class="line">    at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:145)</div><div class="line">    at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:498)</div><div class="line">    at org.openqa.selenium.remote.RemoteWebDriver.startSession(RemoteWebDriver.java:182)</div><div class="line">    at org.openqa.selenium.remote.RemoteWebDriver.startSession(RemoteWebDriver.java:167)</div><div class="line">    at org.openqa.selenium.ie.InternetExplorerDriver.startSession(InternetExplorerDriver.java:133)</div><div class="line">    at org.openqa.selenium.ie.InternetExplorerDriver.setup(InternetExplorerDriver.java:106)</div><div class="line">    at org.openqa.selenium.ie.InternetExplorerDriver.&lt;init&gt;(InternetExplorerDriver.java:52)</div><div class="line">    at com.selenium.test.TempGoogle.main(TempGoogle.java:15)</div></pre></td></tr></table></figure></p>
+<p>解决方法有两种，一种是修改掉IE的设置，不要在任何情况下使用保护模式（protected mode），另一种即是在运行时设置IE的Capabilities。<br>最终代码如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">System.setProperty(&quot;webdriver.ie.driver&quot;, &quot;D:\\web\\test\\selenium\\IEDriverServer_x64_2.44.0\\IEDriverServer.exe&quot;);</div><div class="line">DesiredCapabilities ieCapabilities = DesiredCapabilities.internetExplorer();</div><div class="line">ieCapabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);</div><div class="line">WebDriver driver = new InternetExplorerDriver(ieCapabilities);</div><div class="line">   driver.get(&quot;http://www.baidu.com&quot;);</div><div class="line">   WebElement element = driver.findElement(By.name(&quot;wd&quot;));</div><div class="line">   element.sendKeys(&quot;ztesoft&quot;);</div><div class="line">   element.submit();</div><div class="line">   System.out.println(&quot;Page Title is: &quot; + driver.getTitle());</div><div class="line"></div><div class="line">   (new WebDriverWait(driver,10)).until(new ExpectedCondition&lt;Boolean&gt;() &#123;</div><div class="line">       public Boolean apply(WebDriver d) &#123;</div><div class="line">           return d.getTitle().toLowerCase().startsWith(&quot;ztesoft&quot;);</div><div class="line">       &#125;</div><div class="line">   &#125;);</div><div class="line"></div><div class="line">   System.out.println(&quot;page title is: &quot; + driver.getTitle());</div><div class="line">   driver.quit();</div></pre></td></tr></table></figure></p>
+<h3 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h3><p>在Chrome浏览器上运行测试脚本，首先需要下载ChromeDriver.exe<br>按操作系统区分<br>chromedriver_win32<br>chromedriver_mac32<br>chromedriver_linux64<br>设置变量 “webdriver.chrome.driver”为对应的路径</p>
+<h3 id="Firefox"><a href="#Firefox" class="headerlink" title="Firefox"></a>Firefox</h3><p>Firefox是默认安装路径，webdriver可以正常访问找到它。<br>如果非默认路径，需要设置下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">System.setProperty(&quot;webdriver.firefox.bin&quot;, &quot;C:\\Program Files\\Mozilla Firefox\\firefox.exe&quot;);</div><div class="line">WebDriver webDriver = new FirefoxDriver();</div></pre></td></tr></table></figure></p>
+<h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><h4 id="sendKeys在IE下输入英文或者数字会很慢"><a href="#sendKeys在IE下输入英文或者数字会很慢" class="headerlink" title="sendKeys在IE下输入英文或者数字会很慢"></a>sendKeys在IE下输入英文或者数字会很慢</h4><p>现象：sendKeys在IE下输入英文或者数字会很慢，中文者不会。而在Firefox下则完全没有这个问题<br>处理： 参考 <a href="http://stackoverflow.com/questions/8790420/how-to-speed-up-sendkeys-in-internet-explorer-when-using-selenium-webdriver-2" target="_blank" rel="external">http://stackoverflow.com/questions/8790420/how-to-speed-up-sendkeys-in-internet-explorer-when-using-selenium-webdriver-2</a><br>采用第二种方法用javascript方式 解决<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">String setEffDate = <span class="string">"document.getElementById(\"effectiveDate\").value=\"2013-08-02\""</span>;</div><div class="line">((JavascriptExecutor)driver).executeScript(setEffDate);</div><div class="line"></div><div class="line">String setExpireDate = <span class="string">"document.getElementById(\"expireDate\").value=\"2013-08-03\""</span>;</div><div class="line">((JavascriptExecutor)driver).executeScript(setExpireDate);</div></pre></td></tr></table></figure></p>
+<h4 id="对于日期型选择输入控件不可以直接输入的处理"><a href="#对于日期型选择输入控件不可以直接输入的处理" class="headerlink" title="对于日期型选择输入控件不可以直接输入的处理"></a>对于日期型选择输入控件不可以直接输入的处理</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//现在这个地方不可以直接输入了，可以通过js来输入</span></div><div class="line">   String str = <span class="string">"document.getElementById(\"startdatepicker\").readonly=false"</span>;</div><div class="line">   String strDate = <span class="string">"document.getElementById(\"startdatepicker\").value=\"2013-08-02\""</span>;</div><div class="line">   ((JavascriptExecutor)wd).executeScript(str);</div><div class="line">   ((JavascriptExecutor)wd).executeScript(strDate);</div></pre></td></tr></table></figure>
+<h4 id="报错ElementNotVisibleException"><a href="#报错ElementNotVisibleException" class="headerlink" title="报错ElementNotVisibleException"></a>报错ElementNotVisibleException</h4><p>driver.findElement(By.id(“inlineCheckbox2”)).click();<br>在IE下无法对隐藏元素调用click()方法，否则会报错ElementNotVisibleException</p>
+<p>解决的方法有两种：</p>
+<ol>
+<li>把隐藏元素先给显示出来再赋值</li>
+<li>用javascript方式</li>
+</ol>
+<p>注：在已加载了JQuery的页面上可以直接使用JQuery选择器，进行元素的操作</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/test/" rel="tag"># test</a>
+          
+            <a href="/tags/selenium/" rel="tag"># selenium</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/CentOS-VirtualBox-install/" rel="next" title="记在CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程">
+                <i class="fa fa-chevron-left"></i> 记在CentOS 6.5 下安装VirtualBox搭建XP虚拟机过程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/mip-ios-problem/" rel="prev" title="记 开发MIP IOS版本中遇到的坑">
+                记 开发MIP IOS版本中遇到的坑 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/wxh.jpg"
+               alt="wang.xiaohu" />
+          <p class="site-author-name" itemprop="name">wang.xiaohu</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wangxh89" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#InternetExplorer"><span class="nav-number">1.</span> <span class="nav-text">InternetExplorer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chrome"><span class="nav-number">2.</span> <span class="nav-text">Chrome</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Firefox"><span class="nav-number">3.</span> <span class="nav-text">Firefox</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见问题"><span class="nav-number">4.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sendKeys在IE下输入英文或者数字会很慢"><span class="nav-number">4.1.</span> <span class="nav-text">sendKeys在IE下输入英文或者数字会很慢</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对于日期型选择输入控件不可以直接输入的处理"><span class="nav-number">4.2.</span> <span class="nav-text">对于日期型选择输入控件不可以直接输入的处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#报错ElementNotVisibleException"><span class="nav-number">4.3.</span> <span class="nav-text">报错ElementNotVisibleException</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-tint"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wang.xiaohu</span>
+</div>
+
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i> 访问用户：<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人</span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i> 访问次数：<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.1/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/velocity/1.2.1/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n5VCYRL0j4MHTB1MgIMq9bR5-gzGzoHsz", "6mpkU1dhSWoLYM7PEd05eiMA");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
